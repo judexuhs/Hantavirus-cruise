@@ -1,0 +1,120 @@
+---
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Privacy Policy"
+  description="Privacy Policy for the Hantavirus Cruise Tracker."
+  current="privacy"
+  ogType="article"
+  breadcrumbs={[{ name: "Privacy Policy", path: "/privacy/" }]}
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="muted lede">Effective date: May 8, 2026</p>
+
+      <article class="prose">
+        <p>
+          This Privacy Policy explains how Hantavirus Cruise Tracker (the “Site”) handles
+          information when you visit. The Site is designed to be simple and privacy-respecting.
+        </p>
+
+        <h2>1. Information we collect</h2>
+        <p>The Site may collect the following categories of information:</p>
+        <ul>
+          <li>
+            <strong>Analytics data</strong>: The Site uses Google Analytics to understand aggregate
+            usage (for example: which pages are visited, approximate location, device and browser
+            characteristics, and referral sources). This data is used to improve the Site.
+          </li>
+          <li>
+            <strong>Technical logs</strong>: Like most hosting providers, the platform that serves
+            the Site may process basic request metadata (such as IP address, user agent, and
+            timestamps) for security, abuse prevention, and performance.
+          </li>
+        </ul>
+        <p>
+          The Site does not intentionally collect sensitive personal data, and it does not require
+          you to create an account.
+        </p>
+
+        <h2>2. Cookies</h2>
+        <p>
+          Google Analytics may use cookies or similar technologies to measure usage. You can manage
+          cookies through your browser settings and, where available, via Google’s opt-out tools.
+        </p>
+
+        <h2>3. How we use information</h2>
+        <p>We use collected information to:</p>
+        <ul>
+          <li>Understand Site performance and usage trends.</li>
+          <li>Improve content quality and navigation.</li>
+          <li>Protect the Site from abuse, fraud, and security threats.</li>
+        </ul>
+
+        <h2>4. Sharing</h2>
+        <p>
+          We do not sell your personal information. Analytics data is processed by Google as a
+          service provider. Hosting/log data may be processed by the hosting provider in order to
+          deliver the Site.
+        </p>
+
+        <h2>5. Data retention</h2>
+        <p>
+          Retention periods depend on the analytics/hosting configuration. In general, we keep only
+          what is reasonably necessary to understand site usage and maintain security.
+        </p>
+
+        <h2>6. International visitors</h2>
+        <p>
+          If you access the Site from outside the region where it is hosted, your information may
+          be processed in other jurisdictions with different data protection laws.
+        </p>
+
+        <h2>7. Your choices</h2>
+        <ul>
+          <li>
+            You can opt out of Google Analytics using browser add-ons or privacy settings (where
+            available).
+          </li>
+          <li>You can block cookies in your browser settings.</li>
+          <li>
+            If you believe the Site includes inaccurate information about the outbreak, please open
+            an issue with source links.
+          </li>
+        </ul>
+
+        <h2>8. Changes</h2>
+        <p>
+          We may update this Privacy Policy from time to time. Changes take effect when posted on
+          this page.
+        </p>
+
+        <h2>9. Contact</h2>
+        <p>
+          For questions, please use:
+          <a href="https://github.com/judexuhs/Hantavirus-cruise">GitHub — Hantavirus-cruise</a>.
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .prose :global(ul) {
+    padding-left: var(--sp-5);
+  }
+  .prose :global(li) {
+    margin-bottom: var(--sp-2);
+  }
+</style>

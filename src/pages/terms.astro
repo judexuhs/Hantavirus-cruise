@@ -1,0 +1,118 @@
+---
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Terms of Service"
+  description="Terms of Service for the Hantavirus Cruise Tracker."
+  current="terms"
+  ogType="article"
+  breadcrumbs={[{ name: "Terms of Service", path: "/terms/" }]}
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Legal</p>
+      <h1>Terms of Service</h1>
+      <p class="muted lede">Effective date: May 8, 2026</p>
+
+      <article class="prose">
+        <p>
+          These Terms of Service (“Terms”) govern your access to and use of Hantavirus Cruise
+          Tracker (the “Site”). By accessing or using the Site, you agree to these Terms. If you do
+          not agree, do not use the Site.
+        </p>
+
+        <h2>1. What this Site is (and is not)</h2>
+        <p>
+          The Site is an independent, source-linked tracker that aggregates and summarizes publicly
+          available information about the MV Hondius hantavirus outbreak. The Site is provided for
+          general informational purposes only.
+        </p>
+        <p>
+          The Site is <strong>not</strong> medical advice, public-health guidance, legal advice, or
+          travel advice. Do not rely on the Site to make medical or emergency decisions. Always
+          consult official public-health agencies and qualified professionals.
+        </p>
+
+        <h2>2. No warranties</h2>
+        <p>
+          The Site is provided on an “as is” and “as available” basis. We make no warranties of any
+          kind, whether express, implied, or statutory, including warranties of accuracy,
+          completeness, reliability, merchantability, fitness for a particular purpose, and
+          non-infringement.
+        </p>
+        <p>
+          Outbreak information changes quickly. Some items may be incomplete, time-sensitive, or
+          later corrected by primary sources.
+        </p>
+
+        <h2>3. Limitation of liability</h2>
+        <p>
+          To the fullest extent permitted by law, we will not be liable for any indirect,
+          incidental, special, consequential, or punitive damages, or any loss of profits, data,
+          use, goodwill, or other intangible losses, resulting from your access to or use of (or
+          inability to access or use) the Site.
+        </p>
+
+        <h2>4. External links and third-party content</h2>
+        <p>
+          The Site links to third-party websites and may quote or summarize third-party materials.
+          We do not control third-party sites and are not responsible for their content, policies,
+          or practices. Accessing third-party sites is at your own risk.
+        </p>
+
+        <h2>5. Acceptable use</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use the Site in any way that violates applicable laws or regulations.</li>
+          <li>Attempt to disrupt, damage, or interfere with the Site or its security.</li>
+          <li>
+            Use automated systems to scrape or crawl the Site in a way that unreasonably burdens
+            infrastructure.
+          </li>
+          <li>
+            Misrepresent the Site’s content, or present it as official guidance from any health
+            authority or cruise operator.
+          </li>
+        </ul>
+
+        <h2>6. Intellectual property</h2>
+        <p>
+          The Site’s original content and design are protected by applicable intellectual property
+          laws. Third-party trademarks, logos, and content remain the property of their respective
+          owners. Source links are provided for attribution and verification.
+        </p>
+
+        <h2>7. Changes to the Site or Terms</h2>
+        <p>
+          We may update the Site or these Terms at any time. Changes take effect when posted on
+          this page. Your continued use of the Site after changes are posted constitutes acceptance
+          of the updated Terms.
+        </p>
+
+        <h2>8. Contact</h2>
+        <p>
+          For questions or corrections, please use the repository issues page:
+          <a href="https://github.com/judexuhs/Hantavirus-cruise">GitHub — Hantavirus-cruise</a>.
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .prose :global(ul) {
+    padding-left: var(--sp-5);
+  }
+  .prose :global(li) {
+    margin-bottom: var(--sp-2);
+  }
+</style>
