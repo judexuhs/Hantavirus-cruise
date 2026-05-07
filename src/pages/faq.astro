@@ -1,14 +1,18 @@
 ---
 import Base from "~/layouts/Base.astro";
 import { getCollection } from "astro:content";
+import { faqJsonLd } from "~/lib/seo";
 
 const entries = (await getCollection("faq")).sort((a, b) => a.data.order - b.data.order);
+const structured = [faqJsonLd(entries)];
 ---
 
 <Base
   title="FAQ"
-  description="Answers to common questions from passengers, crew, and the general public about the Hantavirus cruise outbreak."
+  description="Answers to common questions from passengers, crew, and the general public about the MV Hondius hantavirus cruise outbreak — risk, transmission, testing, and travel advice."
   current="faq"
+  structuredData={structured}
+  breadcrumbs={[{ name: "FAQ", path: "/faq/" }]}
 >
   <section class="section">
     <div class="container">

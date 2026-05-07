@@ -9,9 +9,10 @@ const ordered = [...stats.snapshots].sort((a, b) => b.asOf.localeCompare(a.asOf)
 ---
 
 <Base
-  title="Cases"
-  description="Confirmed cases, suspected cases, recoveries, and deaths over time."
+  title="Cases and stats"
+  description="MV Hondius hantavirus outbreak — confirmed and suspected cases, deaths, recoveries, and a per-nationality breakdown of the 88 passengers and 61 crew on board."
   current="cases"
+  breadcrumbs={[{ name: "Cases", path: "/cases/" }]}
 >
   <section class="section">
     <div class="container">

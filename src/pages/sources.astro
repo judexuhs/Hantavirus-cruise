@@ -5,6 +5,7 @@ import SourceFilter from "~/components/SourceFilter.astro";
 import { getCollection } from "astro:content";
 import { newsMeta } from "~/data";
 import { formatDateTime } from "~/lib/format";
+import { newsCollectionJsonLd } from "~/lib/seo";
 
 const all = await getCollection("news");
 const items = all
@@ -21,12 +22,18 @@ const counts = {
   news: items.filter((i) => i.sourceType === "news").length,
   social: items.filter((i) => i.sourceType === "social").length,
 };
+
+const origin = new URL(Astro.url.pathname, Astro.site).origin;
+const structured = [newsCollectionJsonLd({ origin }, items)];
 ---
 
 <Base
   title="Sources"
-  description="Auto-aggregated coverage from CDC, WHO, ECDC, major news organizations, and selected social channels."
+  description="Auto-aggregated coverage of the MV Hondius hantavirus outbreak from CDC, WHO, ECDC, Oceanwide Expeditions, BBC, Le Monde, El País, and other major sources. Refreshed every six hours."
   current="sources"
+  structuredData={structured}
+  modifiedTime={newsMeta.lastRunAt}
+  breadcrumbs={[{ name: "Sources", path: "/sources/" }]}
 >
   <section class="section">
     <div class="container">

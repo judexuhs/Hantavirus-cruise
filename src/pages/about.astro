@@ -7,8 +7,10 @@ const entries = (await getCollection("explainer")).sort((a, b) => a.data.order -
 
 <Base
   title="About hantavirus"
-  description="A plain-English primer on the virus, its symptoms, transmission, treatment, and prevention."
+  description="A plain-English primer on hantavirus — HPS vs HFRS, Andes virus (ANDV), symptoms and incubation, transmission routes, and what is and isn't known about treatment."
   current="about"
+  ogType="article"
+  breadcrumbs={[{ name: "About hantavirus", path: "/about/" }]}
 >
   <section class="section">
     <div class="container">

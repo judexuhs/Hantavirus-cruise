@@ -1,12 +1,23 @@
 ---
 import Base from "~/layouts/Base.astro";
 import TimelineList from "~/components/TimelineList.astro";
+import { getCollection } from "astro:content";
+import { timelineJsonLd } from "~/lib/seo";
+
+const entries = (await getCollection("timeline")).sort((a, b) =>
+  a.data.date.localeCompare(b.data.date),
+);
+const origin = new URL(Astro.url.pathname, Astro.site).origin;
+const structured = [timelineJsonLd({ origin }, entries)];
 ---
 
 <Base
   title="Timeline"
-  description="A chronological log of confirmed events in the Hantavirus cruise outbreak, each linked to a primary source."
+  description="Chronological log of the MV Hondius hantavirus outbreak from departure in Ushuaia through the planned arrival at Granadilla, Tenerife. Each entry is linked to a primary source."
   current="timeline"
+  ogType="article"
+  structuredData={structured}
+  breadcrumbs={[{ name: "Timeline", path: "/timeline/" }]}
 >
   <section class="section">
     <div class="container narrow">

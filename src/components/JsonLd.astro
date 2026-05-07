@@ -1,0 +1,26 @@
+---
+/**
+ * Renders one or more structured-data payloads as a single inline
+ * <script type="application/ld+json"> element. Accepts an object, an
+ * array of objects, or a single composite Graph.
+ */
+
+interface Props {
+  data: unknown | unknown[];
+}
+
+const { data } = Astro.props as Props;
+
+const payload = Array.isArray(data)
+  ? { "@context": "https://schema.org", "@graph": data.map((d) => stripContext(d)) }
+  : data;
+
+function stripContext<T>(obj: T): T {
+  if (!obj || typeof obj !== "object") return obj;
+  const { ...rest } = obj as Record<string, unknown>;
+  delete rest["@context"];
+  return rest as T;
+}
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(payload)} />

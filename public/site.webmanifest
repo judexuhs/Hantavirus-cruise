@@ -1,0 +1,17 @@
+{
+  "name": "Hantavirus Cruise Tracker",
+  "short_name": "Hondius Tracker",
+  "description": "Independent, source-linked tracker of the Hantavirus cruise outbreak.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#b8332b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
