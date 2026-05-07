@@ -1,0 +1,87 @@
+{
+  "ship": {
+    "name": "MV Hondius",
+    "operator": "Oceanwide Expeditions",
+    "passengers": 88,
+    "crew": 61,
+    "lengthM": 107.6,
+    "imo": "9817330"
+  },
+  "voyage": {
+    "departed": "2026-04-01T00:00:00Z",
+    "scheduledReturn": "2026-05-09T12:00:00Z",
+    "currentStatus": "Sailing toward Tenerife after three medical evacuees were airlifted from Cape Verde to the Netherlands on May 6. Spain has agreed to receive the ship at the secondary port of Granadilla; the formal docking request is for May 9 at 12:00 local time. Symptomatic and Spanish-national passengers will quarantine at a military hospital in Madrid; foreign passengers will be repatriated through EU civil protection mechanisms."
+  },
+  "ports": [
+    {
+      "name": "Ushuaia",
+      "country": "Argentina",
+      "arrival": null,
+      "departure": "2026-04-01T00:00:00Z",
+      "lat": -54.8019,
+      "lon": -68.3030,
+      "note": "Departure port. Ship had been based here since November 16, 2025 conducting Antarctic voyages. Investigators are looking at potential ANDV exposure before boarding — the deceased Dutch couple had also travelled through Argentina, Chile, and Uruguay before embarking."
+    },
+    {
+      "name": "South Georgia",
+      "country": "British Overseas Territory",
+      "arrival": null,
+      "departure": null,
+      "lat": -54.5,
+      "lon": -36.5
+    },
+    {
+      "name": "South Sandwich Islands",
+      "country": "British Overseas Territory",
+      "arrival": null,
+      "departure": null,
+      "lat": -57.7,
+      "lon": -26.5
+    },
+    {
+      "name": "Tristan da Cunha",
+      "country": "British Overseas Territory",
+      "arrival": null,
+      "departure": null,
+      "lat": -37.1,
+      "lon": -12.3
+    },
+    {
+      "name": "Saint Helena",
+      "country": "British Overseas Territory",
+      "arrival": "2026-04-24T00:00:00Z",
+      "departure": null,
+      "lat": -15.97,
+      "lon": -5.71,
+      "note": "Body of the first deceased Dutch passenger was disembarked here on April 24. His wife flew onward to South Africa."
+    },
+    {
+      "name": "Ascension Island",
+      "country": "British Overseas Territory",
+      "arrival": null,
+      "departure": "2026-04-27T00:00:00Z",
+      "lat": -7.95,
+      "lon": -14.36,
+      "note": "British male passenger medically evacuated to South Africa from here on April 27."
+    },
+    {
+      "name": "Praia (anchored offshore)",
+      "country": "Cape Verde",
+      "arrival": "2026-05-03T00:00:00Z",
+      "departure": "2026-05-06T00:00:00Z",
+      "lat": 14.93,
+      "lon": -23.51,
+      "note": "Cape Verde declined to permit docking. On May 6, three patients were transferred by ambulance to Praia airport and airlifted to the Netherlands aboard two specialised medical aircraft."
+    },
+    {
+      "name": "Granadilla, Tenerife (planned)",
+      "country": "Spain — Canary Islands",
+      "arrival": "2026-05-09T12:00:00Z",
+      "departure": null,
+      "lat": 28.107,
+      "lon": -16.502,
+      "note": "Granadilla is a secondary port with low commercial activity, ten minutes from Tenerife South Airport — chosen to minimise contact with the local population. Decision faced opposition from the Canary Islands regional government."
+    }
+  ],
+  "disclaimer": "Itinerary compiled from Oceanwide Expeditions' press timeline, ECDC assessment, El País voyage reconstruction, BBC and Le Monde reporting, and the Dutch Ministry of Foreign Affairs medical-evacuation statement. Latitudes and longitudes are approximate centers of each port or anchorage."
+}

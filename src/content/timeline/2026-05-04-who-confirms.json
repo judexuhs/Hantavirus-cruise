@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-04T00:00:00Z",
+  "title": "WHO confirms outbreak; Cape Verde refuses dock",
+  "body": "WHO confirms seven hantavirus cases — two laboratory-confirmed and five suspected — including three deaths. The MV Hondius reaches Cape Verde waters and anchors off Praia, but Cape Verde authorities decline to permit docking on public-health grounds. They send a medical team to the ship instead.",
+  "category": "official_response",
+  "sources": [
+    {
+      "label": "UN News — Hantavirus outbreak update",
+      "url": "https://news.un.org/en/story/2026/05/1167449"
+    },
+    {
+      "label": "RFI — Race to find port for hantavirus-stricken cruise ship",
+      "url": "https://www.rfi.fr/en/international-news/20260505-race-to-find-port-for-hantavirus-stricken-cruise-ship"
+    }
+  ],
+  "status": "confirmed"
+}

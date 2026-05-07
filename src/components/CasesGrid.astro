@@ -1,0 +1,71 @@
+---
+import KpiCard from "./KpiCard.astro";
+import { stats, latestSnapshot } from "~/data";
+
+const snapshots = [...stats.snapshots].sort((a, b) => a.asOf.localeCompare(b.asOf));
+const latest = latestSnapshot();
+const previous = snapshots.length >= 2 ? snapshots[snapshots.length - 2] : undefined;
+
+function delta(field: "confirmed" | "suspected" | "recovered" | "deaths" | "underObservation") {
+  if (!latest || !previous) return undefined;
+  return latest[field] - previous[field];
+}
+---
+
+{
+  latest ? (
+    <div class="kpi-grid">
+      <KpiCard
+        label="Confirmed cases"
+        value={latest.confirmed}
+        delta={delta("confirmed")}
+        tone="alert"
+      />
+      <KpiCard
+        label="Suspected"
+        value={latest.suspected}
+        delta={delta("suspected")}
+        tone="warn"
+      />
+      <KpiCard
+        label="Under observation"
+        value={latest.underObservation}
+        delta={delta("underObservation")}
+      />
+      <KpiCard
+        label="Recovered"
+        value={latest.recovered}
+        delta={delta("recovered")}
+        tone="ok"
+      />
+      <KpiCard label="Deaths" value={latest.deaths} delta={delta("deaths")} tone="alert" />
+    </div>
+  ) : (
+    <p class="muted">No case data has been recorded yet.</p>
+  )
+}
+
+{latest?.note && <p class="footnote subtle">{latest.note}</p>}
+
+<style>
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--sp-4);
+  }
+  .footnote {
+    font-size: var(--fs-xs);
+    margin-top: var(--sp-4);
+    max-width: var(--prose-max);
+  }
+  @media (max-width: 1024px) {
+    .kpi-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,18 @@
+---
+question: "Where do the numbers and stories on this site come from?"
+order: 90
+tags: ["site"]
+---
+
+The case counts on the Overview come from a hand-curated `stats.json` file that the maintainer
+updates against the most recent figure from CDC, WHO, ECDC, or the relevant national
+public-health agency. Each update is dated.
+
+The Sources page is auto-generated. A scheduled job runs every six hours, queries a fixed list of
+RSS feeds and APIs (CDC HAN, CDC Travel Health Notices, WHO Disease Outbreak News, ECDC, Reuters,
+Google News), filters for items mentioning the outbreak, and writes them as JSON files into the
+repository, which triggers a fresh build.
+
+The Timeline is a mix: confirmed entries are curated by the maintainer with citations. Entries
+flagged "Pending review" are auto-suggested by the same job and removed if they cannot be
+verified.

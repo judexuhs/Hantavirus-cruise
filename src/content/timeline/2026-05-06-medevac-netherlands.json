@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-06T00:00:00Z",
+  "title": "Three medical evacuees airlifted from Cape Verde to the Netherlands",
+  "body": "Two specialised medical aircraft, deployed by the Dutch Ministry of Foreign Affairs in cooperation with WHO and RIVM, evacuate three patients: a 56-year-old British national (former police officer Martin Anstee), a 41-year-old Dutch crew member, and a 65-year-old German national. An ambulance moves them from the ship's anchorage to Praia airport. Two are reported in serious condition, one stable.",
+  "category": "official_response",
+  "sources": [
+    {
+      "label": "BBC — Hantavirus-hit cruise ship on way to Canary Islands after three evacuated",
+      "url": "https://www.bbc.co.uk/news/articles/c5y093d5n9ko"
+    },
+    {
+      "label": "Dutch Ministry of Foreign Affairs — Medical evacuation from MV Hondius",
+      "url": "https://www.government.nl/latest/weblogs/the-work-of-the-ministry-of-foreign-affairs/2026/medical-evacuation-from-cruise-ship-m-v-hondius"
+    }
+  ],
+  "status": "confirmed"
+}

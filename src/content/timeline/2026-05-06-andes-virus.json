@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-06T00:00:00Z",
+  "title": "Andes virus (ANDV) confirmed; Swiss case identified",
+  "body": "Reference laboratory confirms at least one case as Andes virus (ANDV) — a New World hantavirus that, unlike most strains, has a documented capacity for limited person-to-person transmission, especially among close contacts. A Swiss male passenger tests positive after returning home and is treated in a Zurich hospital. The British patient in South African ICU is reported to be improving.",
+  "category": "case_update",
+  "sources": [
+    {
+      "label": "ECDC — Hantavirus-associated cluster on a cruise ship",
+      "url": "https://www.ecdc.europa.eu/en/publications-data/hantavirus-associated-cluster-illness-cruise-ship-ecdc-assessment-and-recommendations"
+    },
+    {
+      "label": "France 24 — Hantavirus on the rise in Argentina",
+      "url": "https://www.france24.com/en/americas/20260507-hantavirus-on-rise-argentina-where-mv-hondius-cruise-ship-set-sail"
+    }
+  ],
+  "status": "confirmed"
+}

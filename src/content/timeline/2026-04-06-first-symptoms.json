@@ -1,0 +1,13 @@
+{
+  "date": "2026-04-06T00:00:00Z",
+  "title": "First passenger develops symptoms",
+  "body": "A 70-year-old Dutch passenger begins experiencing fever, headache, abdominal pain, and diarrhea — a non-specific febrile presentation that, in retrospect, was the index case. At the time the cause was unknown.",
+  "category": "detection",
+  "sources": [
+    {
+      "label": "El País — MV Hondius logbook",
+      "url": "https://english.elpais.com/international/2026-05-06/logbook-of-the-mv-hondius-from-ushuaia-to-the-canary-islands-chronology-of-a-hantavirus-outbreak.html"
+    }
+  ],
+  "status": "confirmed"
+}

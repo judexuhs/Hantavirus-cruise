@@ -1,0 +1,202 @@
+---
+import { getCollection } from "astro:content";
+import { formatDate } from "~/lib/format";
+import { hostFromUrl } from "~/lib/format";
+
+interface Props {
+  limit?: number;
+  showPending?: boolean;
+}
+
+const { limit, showPending = false } = Astro.props as Props;
+
+const all = await getCollection("timeline", (entry) =>
+  showPending ? true : entry.data.status === "confirmed",
+);
+
+const entries = all
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, limit ?? all.length);
+
+const categoryMeta: Record<
+  string,
+  { label: string; tone: "alert" | "warn" | "ok" | "info" | "neutral" }
+> = {
+  voyage: { label: "Voyage", tone: "info" },
+  detection: { label: "Detection", tone: "warn" },
+  official_response: { label: "Official response", tone: "info" },
+  case_update: { label: "Case update", tone: "alert" },
+  death: { label: "Death", tone: "alert" },
+  advisory: { label: "Advisory", tone: "warn" },
+  contained: { label: "Contained", tone: "ok" },
+  other: { label: "Note", tone: "neutral" },
+};
+---
+
+{
+  entries.length === 0 ? (
+    <p class="muted">No timeline entries yet.</p>
+  ) : (
+    <ol class="timeline" aria-label="Outbreak timeline">
+      {entries.map((entry) => {
+        const cat = categoryMeta[entry.data.category] ?? categoryMeta.other;
+        return (
+          <li class={`item tone-${cat.tone}`}>
+            <div class="rail" aria-hidden="true">
+              <span class="rail-dot" />
+              <span class="rail-line" />
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <time class="date" datetime={entry.data.date}>
+                  {formatDate(entry.data.date)}
+                </time>
+                <span class={`tag tag-${cat.tone}`}>{cat.label}</span>
+                {entry.data.status === "pending" && (
+                  <span class="tag tag-pending" title="Suggested by automation, awaiting review">
+                    Pending review
+                  </span>
+                )}
+              </div>
+              <h3 class="card-title">{entry.data.title}</h3>
+              <p class="card-body">{entry.data.body}</p>
+              {entry.data.sources.length > 0 && (
+                <ul class="sources">
+                  {entry.data.sources.map((src) => (
+                    <li>
+                      <a href={src.url} rel="noopener external" target="_blank">
+                        {src.label}
+                      </a>
+                      <span class="subtle"> · {hostFromUrl(src.url)}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  )
+}
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--sp-4);
+    position: relative;
+  }
+  .rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rail-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--r-pill);
+    background: var(--c-bg);
+    border: 2px solid var(--c-fg-muted);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .rail-line {
+    flex: 1;
+    width: 2px;
+    background: var(--c-border);
+    margin-top: var(--sp-2);
+  }
+  .item:last-child .rail-line {
+    display: none;
+  }
+  .item.tone-alert .rail-dot {
+    border-color: var(--c-accent);
+  }
+  .item.tone-warn .rail-dot {
+    border-color: var(--c-warning);
+  }
+  .item.tone-ok .rail-dot {
+    border-color: var(--c-success);
+  }
+  .item.tone-info .rail-dot {
+    border-color: var(--c-link);
+  }
+  .card {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4) var(--sp-5);
+    margin-bottom: var(--sp-4);
+    box-shadow: var(--shadow-sm);
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-2);
+  }
+  .date {
+    font-size: var(--fs-xs);
+    color: var(--c-fg-muted);
+    font-feature-settings: "tnum";
+  }
+  .tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px var(--sp-2);
+    border-radius: var(--r-sm);
+    border: 1px solid var(--c-border);
+    color: var(--c-fg-muted);
+  }
+  .tag-alert {
+    background: var(--c-accent-soft);
+    color: var(--c-accent);
+    border-color: color-mix(in srgb, var(--c-accent) 30%, transparent);
+  }
+  .tag-warn {
+    background: var(--c-warning-soft);
+    color: var(--c-warning);
+    border-color: color-mix(in srgb, var(--c-warning) 30%, transparent);
+  }
+  .tag-ok {
+    background: var(--c-success-soft);
+    color: var(--c-success);
+    border-color: color-mix(in srgb, var(--c-success) 30%, transparent);
+  }
+  .tag-info {
+    background: color-mix(in srgb, var(--c-link) 12%, transparent);
+    color: var(--c-link);
+    border-color: color-mix(in srgb, var(--c-link) 30%, transparent);
+  }
+  .tag-pending {
+    border-style: dashed;
+    color: var(--c-fg-muted);
+  }
+  .card-title {
+    font-size: var(--fs-md);
+    margin: 0 0 var(--sp-2);
+  }
+  .card-body {
+    margin: 0 0 var(--sp-3);
+    font-size: var(--fs-sm);
+    color: var(--c-fg);
+  }
+  .sources {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--fs-xs);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+</style>

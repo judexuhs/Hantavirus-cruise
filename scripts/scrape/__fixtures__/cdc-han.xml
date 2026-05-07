@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>CDC Health Alert Network</title>
+    <link>https://emergency.cdc.gov/han/</link>
+    <description>HAN advisories</description>
+    <item>
+      <title>Hantavirus cases reported among passengers of MV Pacific Voyager</title>
+      <link>https://emergency.cdc.gov/han/2026/han00500.asp</link>
+      <pubDate>Mon, 04 May 2026 18:00:00 GMT</pubDate>
+      <description>CDC is investigating a cluster of hantavirus pulmonary syndrome (HPS) cases linked to a recent cruise voyage.</description>
+    </item>
+    <item>
+      <title>Updated guidance on rodent control in food preparation areas</title>
+      <link>https://emergency.cdc.gov/han/2026/han00499.asp</link>
+      <pubDate>Wed, 30 Apr 2026 14:00:00 GMT</pubDate>
+      <description>General rodent control guidance, unrelated to the present cruise inquiry.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-07T08:00:00Z",
+  "title": "WHO updates total to 8 cases — 5 confirmed, 3 suspected, 3 deaths",
+  "body": "WHO's latest situational update raises confirmed laboratory-tested cases to five and revises suspected to three, for a total of eight cases linked to the cluster. The death toll remains at three. Remaining people on board are reported asymptomatic. The Andes virus (ANDV) attribution is reiterated, with limited person-to-person transmission noted as the operating assumption.",
+  "category": "case_update",
+  "sources": [
+    {
+      "label": "Free Press Journal — WHO confirms 3 deaths, 8 hantavirus cases",
+      "url": "https://www.freepressjournal.in/world/who-chief-issues-update-after-confirming-fatal-hantavirus-cluster-on-dutch-cruise-ship-travelling-from-argentina-to-cabo-verde"
+    },
+    {
+      "label": "ABC7 — Hantavirus cruise ship heads for Canary Islands",
+      "url": "https://abc7news.com/post/hantavirus-cruise-ship-heads-spains-canary-islands-officials-race-trace-victims-contacts/19056857/"
+    }
+  ],
+  "status": "confirmed"
+}

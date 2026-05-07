@@ -1,0 +1,17 @@
+{
+  "date": "2026-04-26T00:00:00Z",
+  "title": "Second death; hantavirus identified",
+  "body": "The 69-year-old Dutch wife deteriorates during her flight and dies on April 26. Subsequent laboratory testing confirms hantavirus, providing the first concrete identification of the agent driving the cluster.",
+  "category": "death",
+  "sources": [
+    {
+      "label": "Oceanwide Expeditions — press timeline",
+      "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+    },
+    {
+      "label": "France 24 — Hantavirus on the Hondius: what we know",
+      "url": "https://www.france24.com/en/live-news/20260505-hantavirus-on-the-hondius-what-we-know"
+    }
+  ],
+  "status": "confirmed"
+}

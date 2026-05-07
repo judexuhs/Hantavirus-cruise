@@ -1,0 +1,156 @@
+---
+import { cohort } from "~/data";
+import { formatDate, formatNumber } from "~/lib/format";
+
+const passMax = Math.max(...cohort.passengers.map((p) => p.count));
+const crewMax = Math.max(...cohort.crew.map((p) => p.count));
+---
+
+<section class="cohort">
+  <header class="cohort-head">
+    <div>
+      <h2 id="cohort-heading">Who is on board</h2>
+      <p class="muted">
+        {formatNumber(cohort.totals.passengers)} passengers from {cohort.totals.passengerCountries} countries
+        and {formatNumber(cohort.totals.crew)} crew from {cohort.totals.crewCountries} countries —
+        {cohort.totals.totalCountries} nationalities in all. Snapshot as of <time datetime={cohort.asOf}>{formatDate(cohort.asOf)}</time>.
+      </p>
+    </div>
+  </header>
+
+  <div class="cohort-grid">
+    <div class="panel">
+      <h3>Passengers · {formatNumber(cohort.totals.passengers)}</h3>
+      <ol class="bars">
+        {
+          cohort.passengers.map((row) => (
+            <li>
+              <span class="country">{row.country}</span>
+              <span class="bar-wrap">
+                <span
+                  class="bar bar-passenger"
+                  style={`width: ${(row.count / passMax) * 100}%`}
+                  aria-hidden="true"
+                />
+              </span>
+              <span class="count">{row.count}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h3>Crew · {formatNumber(cohort.totals.crew)}</h3>
+      <ol class="bars">
+        {
+          cohort.crew.map((row) => (
+            <li>
+              <span class="country">{row.country}</span>
+              <span class="bar-wrap">
+                <span
+                  class="bar bar-crew"
+                  style={`width: ${(row.count / crewMax) * 100}%`}
+                  aria-hidden="true"
+                />
+              </span>
+              <span class="count">{row.count}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+
+  <p class="footnote subtle">
+    Source: <a href={cohort.source.url} rel="noopener external" target="_blank">{cohort.source.label}</a>.
+  </p>
+</section>
+
+<style>
+  .cohort {
+    margin-top: var(--sp-7);
+  }
+  .cohort-head {
+    margin-bottom: var(--sp-5);
+  }
+  .cohort-head p {
+    margin: var(--sp-2) 0 0;
+    max-width: var(--prose-max);
+  }
+  .cohort-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-5);
+  }
+  .panel {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+  }
+  .panel h3 {
+    font-size: var(--fs-md);
+    margin: 0 0 var(--sp-4);
+    padding-bottom: var(--sp-3);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .bars {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--sp-2);
+  }
+  .bars li {
+    display: grid;
+    grid-template-columns: 11rem 1fr 2.5rem;
+    align-items: center;
+    gap: var(--sp-3);
+    font-size: var(--fs-sm);
+  }
+  .country {
+    color: var(--c-fg);
+  }
+  .bar-wrap {
+    background: var(--c-bg-sunk);
+    height: 8px;
+    border-radius: var(--r-pill);
+    overflow: hidden;
+  }
+  .bar {
+    display: block;
+    height: 100%;
+    border-radius: var(--r-pill);
+    min-width: 4px;
+  }
+  .bar-passenger {
+    background: var(--c-accent);
+  }
+  .bar-crew {
+    background: var(--c-link);
+  }
+  .count {
+    text-align: right;
+    font-feature-settings: "tnum";
+    color: var(--c-fg-muted);
+  }
+  .footnote {
+    margin-top: var(--sp-4);
+    font-size: var(--fs-xs);
+  }
+  @media (max-width: 1024px) {
+    .cohort-grid {
+      grid-template-columns: 1fr;
+    }
+    .bars li {
+      grid-template-columns: 9rem 1fr 2.5rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .bars li {
+      grid-template-columns: 7rem 1fr 2.5rem;
+      font-size: var(--fs-xs);
+    }
+  }
+</style>

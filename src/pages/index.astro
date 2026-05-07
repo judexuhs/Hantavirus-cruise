@@ -1,0 +1,155 @@
+---
+import Base from "~/layouts/Base.astro";
+import StatusBar from "~/components/StatusBar.astro";
+import CasesGrid from "~/components/CasesGrid.astro";
+import TimelineList from "~/components/TimelineList.astro";
+import NewsCard from "~/components/NewsCard.astro";
+import { getCollection } from "astro:content";
+
+const allNews = await getCollection("news");
+const recentNews = allNews
+  .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt))
+  .slice(0, 6)
+  .map((entry) => entry.data);
+
+const baseUrl = (path: string) => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return `${base}${path}`;
+};
+---
+
+<Base current="home">
+  <StatusBar />
+
+  <section class="section" aria-labelledby="cases-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="cases-heading">Cases at a glance</h2>
+        <a class="more" href={baseUrl("/cases/")}>Full breakdown →</a>
+      </div>
+      <CasesGrid />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="timeline-heading">
+    <div class="container two-col">
+      <div>
+        <div class="section-head">
+          <h2 id="timeline-heading">Recent timeline</h2>
+          <a class="more" href={baseUrl("/timeline/")}>Full timeline →</a>
+        </div>
+        <TimelineList limit={8} showPending={true} />
+      </div>
+      <aside class="aside">
+        <h3>What we know</h3>
+        <ul class="bullet">
+          <li>
+            Hantaviruses are <strong>rodent-borne</strong>; person-to-person spread is rare for
+            most strains.
+          </li>
+          <li>
+            The strain involved here has not yet been confirmed by a reference laboratory.
+          </li>
+          <li>
+            Incubation is typically <strong>2–4 weeks</strong>; passengers should monitor
+            symptoms for at least 6 weeks after disembarkation.
+          </li>
+          <li>
+            There is no specific antiviral; care is supportive, and early hospitalisation
+            improves outcomes.
+          </li>
+        </ul>
+        <a class="more" href={baseUrl("/about/")}>Read the full primer →</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="news-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="news-heading">Latest sources</h2>
+        <a class="more" href={baseUrl("/sources/")}>All sources →</a>
+      </div>
+
+      {
+        recentNews.length === 0 ? (
+          <p class="muted">
+            The scraper has not yet collected any items. Once <code>scripts/scrape/run.ts</code>{" "}
+            runs in CI, source cards will appear here automatically.
+          </p>
+        ) : (
+          <div class="news-grid">
+            {recentNews.map((item) => (
+              <NewsCard item={item} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-5);
+  }
+  .more {
+    font-size: var(--fs-sm);
+    text-decoration: none;
+    color: var(--c-link);
+  }
+  .more:hover {
+    text-decoration: underline;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--sp-7);
+    align-items: start;
+  }
+  .aside {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+    position: sticky;
+    top: 90px;
+  }
+  .aside h3 {
+    font-size: var(--fs-md);
+    margin-bottom: var(--sp-3);
+  }
+  .bullet {
+    margin: 0 0 var(--sp-4);
+    padding-left: var(--sp-5);
+    font-size: var(--fs-sm);
+  }
+  .bullet li {
+    margin-bottom: var(--sp-3);
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+  }
+  @media (max-width: 1024px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+    .aside {
+      position: static;
+    }
+    .news-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

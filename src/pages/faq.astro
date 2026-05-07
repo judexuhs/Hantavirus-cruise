@@ -1,0 +1,89 @@
+---
+import Base from "~/layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("faq")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="FAQ"
+  description="Answers to common questions from passengers, crew, and the general public about the Hantavirus cruise outbreak."
+  current="faq"
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Common questions</p>
+      <h1>Frequently asked questions</h1>
+      <p class="muted lede">
+        High-frequency, high-stakes questions answered with citations. If your question isn't
+        here, the Sources page is the most up-to-date place to look.
+      </p>
+
+      <div class="faq-list prose">
+        {
+          entries.map(async (entry) => {
+            const { Content } = await entry.render();
+            return (
+              <details class="faq-item">
+                <summary>{entry.data.question}</summary>
+                <div class="answer">
+                  <Content />
+                </div>
+              </details>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .faq-list {
+    max-width: 56rem;
+  }
+  .faq-item {
+    border-top: 1px solid var(--c-border);
+    padding: var(--sp-4) 0;
+  }
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--c-border);
+  }
+  summary {
+    cursor: pointer;
+    font-family: var(--font-serif);
+    font-size: var(--fs-md);
+    font-weight: 500;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: "+";
+    font-size: var(--fs-lg);
+    color: var(--c-fg-muted);
+    transition: transform 0.15s var(--ease);
+    line-height: 1;
+  }
+  .faq-item[open] summary::after {
+    content: "−";
+  }
+  .answer {
+    margin-top: var(--sp-3);
+    padding-left: 0;
+  }
+  .answer :global(p) {
+    font-size: var(--fs-sm);
+    color: var(--c-fg);
+  }
+</style>

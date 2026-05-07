@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Google News - hantavirus cruise</title>
+    <link>https://news.google.com</link>
+    <description>Search results</description>
+    <item>
+      <title>Cruise line confirms hantavirus cases aboard ship</title>
+      <link>https://news.google.com/articles/abc?utm_source=rss&amp;utm_medium=feed</link>
+      <pubDate>Tue, 06 May 2026 09:00:00 GMT</pubDate>
+      <description>The operator of MV Pacific Voyager confirmed it is cooperating with health authorities.</description>
+      <source url="https://example-news.com">Example News</source>
+    </item>
+    <item>
+      <title>Stock market opens flat ahead of Fed meeting</title>
+      <link>https://news.google.com/articles/xyz</link>
+      <pubDate>Tue, 06 May 2026 09:00:00 GMT</pubDate>
+      <description>Unrelated financial story to test keyword filtering.</description>
+    </item>
+  </channel>
+</rss>

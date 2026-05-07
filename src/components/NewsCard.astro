@@ -1,0 +1,125 @@
+---
+import type { NewsType } from "~/content/config";
+import { formatDate, hostFromUrl, relativeFromNow } from "~/lib/format";
+
+interface Props {
+  item: NewsType;
+}
+
+const { item } = Astro.props as Props;
+
+const tone =
+  item.sourceType === "official" ? "official" : item.sourceType === "news" ? "news" : "social";
+---
+
+<article class={`news-card tone-${tone}`} data-source-type={item.sourceType}>
+  <header class="card-head">
+    <span class={`badge badge-${tone}`}>{item.sourceType}</span>
+    <span class="source-name">{item.source}</span>
+    <span class="dot subtle" aria-hidden="true">·</span>
+    <time class="time subtle" datetime={item.publishedAt} title={formatDate(item.publishedAt)}>
+      {relativeFromNow(item.publishedAt)}
+    </time>
+  </header>
+  <h3 class="title">
+    <a href={item.url} rel="noopener external" target="_blank">{item.title}</a>
+  </h3>
+  {item.excerpt && <p class="excerpt">{item.excerpt}</p>}
+  <footer class="card-foot subtle">
+    <span>{hostFromUrl(item.url)}</span>
+    {
+      item.tags.length > 0 && (
+        <span class="tags">
+          {item.tags.slice(0, 3).map((t) => (
+            <span class="tag">#{t}</span>
+          ))}
+        </span>
+      )
+    }
+  </footer>
+</article>
+
+<style>
+  .news-card {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4) var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s var(--ease);
+  }
+  .news-card:hover {
+    border-color: var(--c-border-strong);
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--fs-xs);
+    flex-wrap: wrap;
+  }
+  .badge {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+    padding: 2px var(--sp-2);
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+    font-weight: 600;
+  }
+  .badge-official {
+    background: var(--c-accent-soft);
+    color: var(--c-accent);
+    border-color: color-mix(in srgb, var(--c-accent) 30%, transparent);
+  }
+  .badge-news {
+    background: color-mix(in srgb, var(--c-link) 12%, transparent);
+    color: var(--c-link);
+    border-color: color-mix(in srgb, var(--c-link) 30%, transparent);
+  }
+  .badge-social {
+    background: var(--c-bg-sunk);
+    color: var(--c-fg-muted);
+    border-color: var(--c-border);
+  }
+  .source-name {
+    font-weight: 600;
+    color: var(--c-fg);
+  }
+  .title {
+    font-size: var(--fs-md);
+    line-height: var(--lh-snug);
+    margin: 0;
+  }
+  .title a {
+    color: var(--c-fg);
+    text-decoration: none;
+  }
+  .title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--c-link);
+  }
+  .excerpt {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--c-fg-muted);
+  }
+  .card-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    font-size: var(--fs-xs);
+  }
+  .tags {
+    display: inline-flex;
+    gap: var(--sp-2);
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+</style>

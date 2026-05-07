@@ -1,0 +1,45 @@
+{
+  "asOf": "2026-05-07T00:00:00Z",
+  "totals": {
+    "passengers": 88,
+    "crew": 61,
+    "passengerCountries": 18,
+    "crewCountries": 9,
+    "totalCountries": 23
+  },
+  "passengers": [
+    { "country": "United Kingdom", "count": 19 },
+    { "country": "United States", "count": 17 },
+    { "country": "Spain", "count": 13 },
+    { "country": "Netherlands", "count": 8 },
+    { "country": "Germany", "count": 7 },
+    { "country": "France", "count": 5 },
+    { "country": "Canada", "count": 4 },
+    { "country": "Australia", "count": 4 },
+    { "country": "Türkiye", "count": 3 },
+    { "country": "Belgium", "count": 2 },
+    { "country": "Ireland", "count": 2 },
+    { "country": "Greece", "count": 1 },
+    { "country": "Japan", "count": 1 },
+    { "country": "New Zealand", "count": 1 },
+    { "country": "Argentina", "count": 1 },
+    { "country": "Poland", "count": 1 },
+    { "country": "Russia", "count": 1 },
+    { "country": "Guatemala", "count": 1 }
+  ],
+  "crew": [
+    { "country": "Philippines", "count": 38 },
+    { "country": "Ukraine", "count": 5 },
+    { "country": "Netherlands", "count": 5 },
+    { "country": "United Kingdom", "count": 4 },
+    { "country": "Spain", "count": 1 },
+    { "country": "Germany", "count": 1 },
+    { "country": "India", "count": 1 },
+    { "country": "Portugal", "count": 1 },
+    { "country": "Montenegro", "count": 1 }
+  ],
+  "source": {
+    "label": "Oceanwide Expeditions press release, via NDTV / RFI roll-up",
+    "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+  }
+}

@@ -1,0 +1,105 @@
+---
+import Base from "~/layouts/Base.astro";
+import RouteMap from "~/components/RouteMap.astro";
+import { cruise } from "~/data";
+import { formatDate } from "~/lib/format";
+
+const { ship, voyage } = cruise;
+---
+
+<Base
+  title="Cruise and route"
+  description="The vessel involved in the outbreak, plus its scheduled itinerary and ports of call."
+  current="cruise"
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Vessel and itinerary</p>
+      <h1>Cruise and route</h1>
+      <p class="muted lede">
+        Ship metadata is taken from the operator's published profile and IMO records; itinerary
+        and current location are taken from the operator's voyage page and port authority
+        statements. Discrepancies between sources are noted on individual ports.
+      </p>
+
+      <div class="ship-grid">
+        <dl class="ship-card">
+          <dt>Vessel name</dt>
+          <dd>{ship.name}</dd>
+          <dt>Operator</dt>
+          <dd>{ship.operator}</dd>
+          <dt>IMO</dt>
+          <dd>{ship.imo ?? "—"}</dd>
+          <dt>Length</dt>
+          <dd>{ship.lengthM ? `${ship.lengthM} m` : "—"}</dd>
+          <dt>Passengers</dt>
+          <dd>{ship.passengers ?? "—"}</dd>
+          <dt>Crew</dt>
+          <dd>{ship.crew ?? "—"}</dd>
+        </dl>
+        <dl class="ship-card">
+          <dt>Departed</dt>
+          <dd>{voyage.departed ? formatDate(voyage.departed) : "—"}</dd>
+          <dt>Scheduled return</dt>
+          <dd>{voyage.scheduledReturn ? formatDate(voyage.scheduledReturn) : "—"}</dd>
+          <dt>Current status</dt>
+          <dd>{voyage.currentStatus}</dd>
+        </dl>
+      </div>
+
+      <h2 class="map-heading">Itinerary</h2>
+      <RouteMap ports={cruise.ports} />
+
+      <p class="footnote subtle">{cruise.disclaimer}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .ship-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-7);
+  }
+  .ship-card {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4) var(--sp-5);
+    margin: 0;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--sp-2) var(--sp-4);
+    align-content: start;
+  }
+  .ship-card dt {
+    color: var(--c-fg-muted);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    align-self: center;
+  }
+  .ship-card dd {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .map-heading {
+    margin-top: var(--sp-7);
+  }
+  .footnote {
+    margin-top: var(--sp-5);
+    font-size: var(--fs-xs);
+    max-width: var(--prose-max);
+  }
+  @media (max-width: 768px) {
+    .ship-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

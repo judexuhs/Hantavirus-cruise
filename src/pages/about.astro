@@ -1,0 +1,58 @@
+---
+import Base from "~/layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const entries = (await getCollection("explainer")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="About hantavirus"
+  description="A plain-English primer on the virus, its symptoms, transmission, treatment, and prevention."
+  current="about"
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Primer</p>
+      <h1>About hantavirus</h1>
+      <p class="muted lede">
+        Background on the virus family, the diseases it causes, how it spreads, and what is — and
+        is not — known about clinical management. Written for a general audience; cited where
+        possible.
+      </p>
+
+      <article class="prose">
+        {
+          entries.map(async (entry) => {
+            const { Content } = await entry.render();
+            return (
+              <section class="entry">
+                <h2 id={entry.id}>{entry.data.title}</h2>
+                <Content />
+              </section>
+            );
+          })
+        }
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .entry {
+    margin-bottom: var(--sp-7);
+  }
+  .entry h2 {
+    margin-bottom: var(--sp-4);
+  }
+  .prose :global(ul) {
+    padding-left: var(--sp-5);
+  }
+  .prose :global(li) {
+    margin-bottom: var(--sp-2);
+  }
+</style>

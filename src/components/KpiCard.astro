@@ -1,0 +1,85 @@
+---
+import { formatNumber } from "~/lib/format";
+
+interface Props {
+  label: string;
+  value: number | string;
+  delta?: number;
+  hint?: string;
+  tone?: "neutral" | "alert" | "warn" | "ok";
+}
+
+const { label, value, delta, hint, tone = "neutral" } = Astro.props as Props;
+const display = typeof value === "number" ? formatNumber(value) : value;
+---
+
+<div class={`kpi tone-${tone}`}>
+  <div class="kpi-label">{label}</div>
+  <div class="kpi-value">{display}</div>
+  {
+    typeof delta === "number" && delta !== 0 && (
+      <div class={`kpi-delta ${delta > 0 ? "up" : "down"}`}>
+        <span aria-hidden="true">{delta > 0 ? "▲" : "▼"}</span>
+        <span>
+          {delta > 0 ? "+" : ""}
+          {formatNumber(delta)}
+        </span>
+        <span class="subtle">vs. previous</span>
+      </div>
+    )
+  }
+  {hint && <div class="kpi-hint subtle">{hint}</div>}
+</div>
+
+<style>
+  .kpi {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-lg);
+    padding: var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    min-height: 120px;
+    box-shadow: var(--shadow-sm);
+  }
+  .kpi-label {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-fg-muted);
+    font-weight: 600;
+  }
+  .kpi-value {
+    font-family: var(--font-serif);
+    font-size: var(--fs-3xl);
+    line-height: 1;
+    font-feature-settings: "tnum";
+    color: var(--c-fg);
+  }
+  .kpi-delta {
+    font-size: var(--fs-xs);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+  .kpi-delta.up {
+    color: var(--c-accent);
+  }
+  .kpi-delta.down {
+    color: var(--c-success);
+  }
+  .kpi-hint {
+    font-size: var(--fs-xs);
+    margin-top: auto;
+  }
+  .tone-alert .kpi-value {
+    color: var(--c-accent);
+  }
+  .tone-warn .kpi-value {
+    color: var(--c-warning);
+  }
+  .tone-ok .kpi-value {
+    color: var(--c-success);
+  }
+</style>

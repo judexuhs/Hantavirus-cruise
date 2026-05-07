@@ -1,0 +1,161 @@
+---
+import type { PortStop } from "~/data";
+import { formatDate } from "~/lib/format";
+
+interface Props {
+  ports: PortStop[];
+}
+
+const { ports } = Astro.props as Props;
+
+const known = ports.filter(
+  (p): p is PortStop & { lat: number; lon: number } => p.lat !== null && p.lon !== null,
+);
+
+let svgPoints: { x: number; y: number; port: PortStop }[] = [];
+
+if (known.length > 0) {
+  const minLat = Math.min(...known.map((p) => p.lat)) - 5;
+  const maxLat = Math.max(...known.map((p) => p.lat)) + 5;
+  const minLon = Math.min(...known.map((p) => p.lon)) - 5;
+  const maxLon = Math.max(...known.map((p) => p.lon)) + 5;
+  const w = 800;
+  const h = 360;
+  svgPoints = known.map((p) => ({
+    x: ((p.lon - minLon) / (maxLon - minLon)) * w,
+    y: h - ((p.lat - minLat) / (maxLat - minLat)) * h,
+    port: p,
+  }));
+}
+---
+
+{
+  known.length === 0 ? (
+    <div class="empty-map">
+      <p class="muted">
+        Ports of call are not yet confirmed. The route map renders once coordinates are added to{" "}
+        <code>src/data/cruise.json</code>.
+      </p>
+    </div>
+  ) : (
+    <figure class="route-map">
+      <svg
+        viewBox="0 0 800 360"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Approximate cruise route"
+      >
+        <rect width="800" height="360" fill="var(--c-bg-sunk)" />
+        <g class="grid" stroke="var(--c-border)" stroke-width="0.5">
+          <line x1="0" y1="120" x2="800" y2="120" />
+          <line x1="0" y1="240" x2="800" y2="240" />
+          <line x1="200" y1="0" x2="200" y2="360" />
+          <line x1="400" y1="0" x2="400" y2="360" />
+          <line x1="600" y1="0" x2="600" y2="360" />
+        </g>
+        {svgPoints.length > 1 && (
+          <polyline
+            points={svgPoints.map((s) => `${s.x},${s.y}`).join(" ")}
+            fill="none"
+            stroke="var(--c-accent)"
+            stroke-width="2"
+            stroke-dasharray="4 4"
+          />
+        )}
+        {svgPoints.map((s, i) => (
+          <g>
+            <circle cx={s.x} cy={s.y} r="6" fill="var(--c-accent)" />
+            <circle cx={s.x} cy={s.y} r="11" fill="none" stroke="var(--c-accent)" opacity="0.4" />
+            <text x={s.x + 12} y={s.y + 4} fill="var(--c-fg)" font-size="12">
+              {i + 1}. {s.port.name}
+            </text>
+          </g>
+        ))}
+      </svg>
+      <figcaption class="subtle">
+        Approximate route. Coordinates are degrees latitude/longitude on a simple equirectangular
+        projection — illustrative only, not navigational.
+      </figcaption>
+
+      <ol class="port-list">
+        {ports.map((p, i) => (
+          <li>
+            <span class="num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <div class="port-name">
+                {p.name}
+                <span class="subtle"> · {p.country}</span>
+              </div>
+              <div class="port-times subtle">
+                {p.arrival ? `Arr ${formatDate(p.arrival)}` : "Arrival TBD"}
+                {p.departure ? ` · Dep ${formatDate(p.departure)}` : ""}
+              </div>
+              {p.note && <div class="port-note subtle">{p.note}</div>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </figure>
+  )
+}
+
+<style>
+  .route-map {
+    margin: 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-bg-sunk);
+  }
+  figcaption {
+    margin-top: var(--sp-2);
+    font-size: var(--fs-xs);
+  }
+  .empty-map {
+    padding: var(--sp-6);
+    border: 1px dashed var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-bg-sunk);
+  }
+  .port-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-5) 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-3);
+  }
+  .port-list li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    background: var(--c-bg-elev);
+  }
+  .num {
+    font-family: var(--font-mono);
+    color: var(--c-fg-muted);
+    font-size: var(--fs-sm);
+  }
+  .port-name {
+    font-weight: 500;
+  }
+  .port-times {
+    font-size: var(--fs-xs);
+    margin-top: var(--sp-1);
+  }
+  .port-note {
+    font-size: var(--fs-xs);
+    margin-top: var(--sp-1);
+  }
+  @media (max-width: 768px) {
+    .port-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+{
+  "date": "2026-04-01T00:00:00Z",
+  "title": "MV Hondius departs Ushuaia bound for Cape Verde",
+  "body": "The Dutch-flagged polar expedition vessel MV Hondius, operated by Oceanwide Expeditions, sets sail from Ushuaia, Argentina with 88 passengers and 61 crew aboard, representing 23 nationalities. The ship had been based in Ushuaia since November 2025 conducting Antarctic voyages.",
+  "category": "voyage",
+  "sources": [
+    {
+      "label": "Oceanwide Expeditions — press timeline",
+      "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+    },
+    {
+      "label": "EFE — Cruise ship was based in Argentina before sailing",
+      "url": "https://efe.com/english/health/2026-05-05/cruise-ship-affected-by-hantavirus-was-based-in-argentina-for-months-before-sailing/"
+    }
+  ],
+  "status": "confirmed"
+}

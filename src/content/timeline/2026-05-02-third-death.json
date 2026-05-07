@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-02T00:00:00Z",
+  "title": "Third death; first crew cases reported",
+  "body": "A German female passenger, who developed fever on April 28, dies on May 2. On the same day, two crew members — one British and one Dutch — develop acute respiratory symptoms, marking the first cases among ship staff and raising concern about onboard transmission.",
+  "category": "death",
+  "sources": [
+    {
+      "label": "Oceanwide Expeditions — press timeline",
+      "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+    },
+    {
+      "label": "RTÉ — Timeline of events on board MV Hondius",
+      "url": "https://www.rte.ie/news/world/2026/0504/1571665-hondius-timeline/"
+    }
+  ],
+  "status": "confirmed"
+}

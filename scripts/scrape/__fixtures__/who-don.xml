@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>WHO Disease Outbreak News</title>
+  <link href="https://www.who.int/csr/don/en/"/>
+  <updated>2026-05-05T10:00:00Z</updated>
+  <entry>
+    <title>Hantavirus disease - cruise vessel in the Pacific</title>
+    <link rel="alternate" href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON123"/>
+    <updated>2026-05-05T10:00:00Z</updated>
+    <summary>WHO has been notified of a cluster of hantavirus cases among passengers of an international cruise vessel.</summary>
+  </entry>
+</feed>

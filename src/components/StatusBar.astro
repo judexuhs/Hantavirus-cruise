@@ -1,0 +1,121 @@
+---
+import { stats, latestSnapshot, type OutbreakStatus } from "~/data";
+import { formatDateTime, relativeFromNow } from "~/lib/format";
+
+const snapshot = latestSnapshot();
+const { outbreak } = stats;
+
+const statusLabels: Record<OutbreakStatus, { label: string; tone: string }> = {
+  active: { label: "Active outbreak", tone: "active" },
+  monitoring: { label: "Monitoring", tone: "monitor" },
+  contained: { label: "Contained", tone: "contained" },
+  unknown: { label: "Status unconfirmed", tone: "monitor" },
+};
+
+const status = statusLabels[outbreak.status];
+---
+
+<section class="status-bar" aria-label="Outbreak status overview">
+  <div class="container status-inner">
+    <div class="left">
+      <p class="eyebrow">Current status</p>
+      <h1 class="title">{outbreak.name}</h1>
+      <p class="muted ship">
+        Vessel: <strong>{outbreak.shipName}</strong>
+        {outbreak.operator && outbreak.operator !== "TBD" ? ` · Operator: ${outbreak.operator}` : ""}
+      </p>
+    </div>
+
+    <div class="right">
+      <span class={`chip chip-${status.tone}`} role="status">
+        <span class="chip-dot" aria-hidden="true"></span>
+        {status.label}
+      </span>
+      <p class="updated subtle" title={outbreak.statusUpdatedAt}>
+        Status set {relativeFromNow(outbreak.statusUpdatedAt)}
+      </p>
+      {
+        snapshot && (
+          <p class="updated subtle" title={snapshot.asOf}>
+            Counts as of <time datetime={snapshot.asOf}>{formatDateTime(snapshot.asOf)}</time>
+          </p>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .status-bar {
+    background: linear-gradient(
+      180deg,
+      var(--c-bg) 0%,
+      color-mix(in srgb, var(--c-accent-soft) 60%, var(--c-bg)) 100%
+    );
+    padding-block: var(--sp-7) var(--sp-7);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .status-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--sp-6);
+    align-items: end;
+  }
+  .title {
+    margin: var(--sp-2) 0 var(--sp-3);
+    font-size: var(--fs-3xl);
+  }
+  .ship {
+    margin: 0;
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--sp-2);
+  }
+  .updated {
+    font-size: var(--fs-xs);
+    margin: 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: currentColor;
+    box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 22%, transparent);
+  }
+  .chip-active {
+    background: var(--c-status-active-soft);
+    color: var(--c-status-active);
+    border-color: color-mix(in srgb, var(--c-status-active) 30%, transparent);
+  }
+  .chip-monitor {
+    background: var(--c-status-monitor-soft);
+    color: var(--c-status-monitor);
+    border-color: color-mix(in srgb, var(--c-status-monitor) 30%, transparent);
+  }
+  .chip-contained {
+    background: var(--c-status-contained-soft);
+    color: var(--c-status-contained);
+    border-color: color-mix(in srgb, var(--c-status-contained) 30%, transparent);
+  }
+  @media (max-width: 768px) {
+    .status-inner {
+      grid-template-columns: 1fr;
+    }
+    .right {
+      align-items: flex-start;
+    }
+  }
+</style>

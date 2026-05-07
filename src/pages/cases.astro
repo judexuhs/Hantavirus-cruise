@@ -1,0 +1,109 @@
+---
+import Base from "~/layouts/Base.astro";
+import CasesGrid from "~/components/CasesGrid.astro";
+import CohortBreakdown from "~/components/CohortBreakdown.astro";
+import { stats } from "~/data";
+import { formatDate, formatNumber } from "~/lib/format";
+
+const ordered = [...stats.snapshots].sort((a, b) => b.asOf.localeCompare(a.asOf));
+---
+
+<Base
+  title="Cases"
+  description="Confirmed cases, suspected cases, recoveries, and deaths over time."
+  current="cases"
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Reported figures</p>
+      <h1>Cases and stats</h1>
+      <p class="muted lede">
+        Numbers reflect the most recent figure published by the responsible public-health agency
+        (CDC, WHO, ECDC, or the relevant national authority). Each row below is a dated snapshot —
+        we do not erase history when figures are revised.
+      </p>
+
+      <CasesGrid />
+
+      <CohortBreakdown />
+
+      <h2 class="history-heading">History</h2>
+      {
+        ordered.length === 0 ? (
+          <p class="muted">No snapshots recorded yet.</p>
+        ) : (
+          <div class="table-wrap">
+            <table class="snap-table">
+              <thead>
+                <tr>
+                  <th scope="col">As of</th>
+                  <th scope="col" class="num">Confirmed</th>
+                  <th scope="col" class="num">Suspected</th>
+                  <th scope="col" class="num">Observation</th>
+                  <th scope="col" class="num">Recovered</th>
+                  <th scope="col" class="num">Deaths</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ordered.map((s) => (
+                  <tr>
+                    <td>
+                      <time datetime={s.asOf}>{formatDate(s.asOf)}</time>
+                    </td>
+                    <td class="num">{formatNumber(s.confirmed)}</td>
+                    <td class="num">{formatNumber(s.suspected)}</td>
+                    <td class="num">{formatNumber(s.underObservation)}</td>
+                    <td class="num">{formatNumber(s.recovered)}</td>
+                    <td class="num">{formatNumber(s.deaths)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .history-heading {
+    margin-top: var(--sp-7);
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+  }
+  .snap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    background: var(--c-bg-elev);
+  }
+  .snap-table th,
+  .snap-table td {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+  }
+  .snap-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .snap-table th {
+    background: var(--c-bg-sunk);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--c-fg-muted);
+  }
+  .num {
+    text-align: right;
+    font-feature-settings: "tnum";
+  }
+</style>

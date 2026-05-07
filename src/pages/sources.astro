@@ -1,0 +1,90 @@
+---
+import Base from "~/layouts/Base.astro";
+import NewsCard from "~/components/NewsCard.astro";
+import SourceFilter from "~/components/SourceFilter.astro";
+import { getCollection } from "astro:content";
+import { newsMeta } from "~/data";
+import { formatDateTime } from "~/lib/format";
+
+const all = await getCollection("news");
+const items = all
+  .map((entry) => entry.data)
+  .sort((a, b) => {
+    const ds = (b.score ?? 0) - (a.score ?? 0);
+    if (ds !== 0) return ds;
+    return b.publishedAt.localeCompare(a.publishedAt);
+  });
+
+const counts = {
+  all: items.length,
+  official: items.filter((i) => i.sourceType === "official").length,
+  news: items.filter((i) => i.sourceType === "news").length,
+  social: items.filter((i) => i.sourceType === "social").length,
+};
+---
+
+<Base
+  title="Sources"
+  description="Auto-aggregated coverage from CDC, WHO, ECDC, major news organizations, and selected social channels."
+  current="sources"
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Aggregated coverage</p>
+      <h1>Latest sources</h1>
+      <p class="muted lede">
+        Items refresh automatically every six hours via a GitHub Actions cron job. Highest-trust
+        official notices rank first, then mainstream reporting, then clearly-labelled social
+        signals. Last refreshed <strong>{formatDateTime(newsMeta.lastRunAt)}</strong>.
+      </p>
+
+      <SourceFilter counts={counts} targetId="sources-list" />
+
+      {
+        items.length === 0 ? (
+          <p class="muted">
+            No items collected yet. The pipeline will populate this list on its next run.
+          </p>
+        ) : (
+          <div id="sources-list" class="news-grid" data-filter="all">
+            {items.map((item) => (
+              <NewsCard item={item} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-5);
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+  }
+  .news-grid[data-filter="official"] :global([data-source-type]:not([data-source-type="official"])) {
+    display: none;
+  }
+  .news-grid[data-filter="news"] :global([data-source-type]:not([data-source-type="news"])) {
+    display: none;
+  }
+  .news-grid[data-filter="social"] :global([data-source-type]:not([data-source-type="social"])) {
+    display: none;
+  }
+  @media (max-width: 1024px) {
+    .news-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

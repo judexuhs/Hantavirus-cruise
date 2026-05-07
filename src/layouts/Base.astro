@@ -1,0 +1,60 @@
+---
+import "~/styles/global.css";
+import SiteHeader from "~/components/SiteHeader.astro";
+import SiteFooter from "~/components/SiteFooter.astro";
+import { stats } from "~/data";
+
+interface Props {
+  title?: string;
+  description?: string;
+  current?: string;
+}
+
+const { title, description, current } = Astro.props as Props;
+
+const siteTitle = title
+  ? `${title} — Hantavirus Cruise Tracker`
+  : "Hantavirus Cruise Tracker — Fact-first outbreak monitoring";
+
+const desc =
+  description ??
+  `An independent, source-linked English tracker of the ${stats.outbreak.name}. Timeline, case counts, advisories, and aggregated coverage from CDC, WHO, ECDC, and major newsrooms.`;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Latest sources" href="/rss.xml" />
+    <script is:inline>
+      // Apply stored theme before paint to avoid flash.
+      try {
+        const t = localStorage.getItem("hcv-theme");
+        if (t === "light" || t === "dark") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <SiteHeader current={current} />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

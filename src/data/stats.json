@@ -1,0 +1,47 @@
+{
+  "outbreak": {
+    "name": "Hantavirus outbreak aboard MV Hondius",
+    "shipName": "MV Hondius",
+    "operator": "Oceanwide Expeditions",
+    "status": "active",
+    "statusUpdatedAt": "2026-05-07T12:00:00Z"
+  },
+  "snapshots": [
+    {
+      "asOf": "2026-04-27T00:00:00Z",
+      "confirmed": 1,
+      "suspected": 1,
+      "recovered": 0,
+      "deaths": 1,
+      "underObservation": 147,
+      "note": "First lab-confirmed case (British male, medevac from Ascension Island to South Africa). One Dutch passenger had already died on April 11; cause not yet linked at this point."
+    },
+    {
+      "asOf": "2026-05-04T00:00:00Z",
+      "confirmed": 2,
+      "suspected": 5,
+      "recovered": 0,
+      "deaths": 3,
+      "underObservation": 144,
+      "note": "WHO update: seven cases total, two laboratory confirmed and five suspected, three deaths. Ship anchored off Praia, Cape Verde; Cape Verde declined to permit docking."
+    },
+    {
+      "asOf": "2026-05-06T00:00:00Z",
+      "confirmed": 3,
+      "suspected": 5,
+      "recovered": 0,
+      "deaths": 3,
+      "underObservation": 143,
+      "note": "Andes virus (ANDV) confirmed by reference lab. Three medical evacuees airlifted to the Netherlands (one British, one Dutch crew, one German). Swiss passenger tests positive after returning home."
+    },
+    {
+      "asOf": "2026-05-07T12:00:00Z",
+      "confirmed": 5,
+      "suspected": 3,
+      "recovered": 0,
+      "deaths": 3,
+      "underObservation": 141,
+      "note": "WHO updates total to 8 cases — 5 confirmed, 3 suspected, 3 deaths. Remaining people on board reported asymptomatic; ship sailing toward Tenerife with planned arrival May 9 at the port of Granadilla."
+    }
+  ]
+}

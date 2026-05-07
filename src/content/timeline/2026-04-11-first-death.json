@@ -1,0 +1,17 @@
+{
+  "date": "2026-04-11T00:00:00Z",
+  "title": "First death aboard the vessel",
+  "body": "The 70-year-old Dutch passenger dies. Cause of death is not established at the time and would only be linked to hantavirus weeks later, after his wife also fell ill and tested positive.",
+  "category": "death",
+  "sources": [
+    {
+      "label": "Oceanwide Expeditions — press timeline",
+      "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+    },
+    {
+      "label": "RTÉ — Timeline of events on board MV Hondius",
+      "url": "https://www.rte.ie/news/world/2026/0504/1571665-hondius-timeline/"
+    }
+  ],
+  "status": "confirmed"
+}

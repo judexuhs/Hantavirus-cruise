@@ -1,0 +1,80 @@
+---
+/**
+ * Client-side filter chips. Sets a data attribute on the wrapping list,
+ * which CSS uses to hide cards. No JS framework, just attribute toggling.
+ */
+interface Counts {
+  all: number;
+  official: number;
+  news: number;
+  social: number;
+}
+
+interface Props {
+  counts: Counts;
+  targetId: string;
+}
+
+const { counts, targetId } = Astro.props as Props;
+---
+
+<div class="filter-bar" role="tablist" aria-label="Filter sources" data-target={targetId}>
+  <button data-filter="all" class="chip active" role="tab" aria-selected="true">
+    All <span class="count">{counts.all}</span>
+  </button>
+  <button data-filter="official" class="chip" role="tab" aria-selected="false">
+    Official <span class="count">{counts.official}</span>
+  </button>
+  <button data-filter="news" class="chip" role="tab" aria-selected="false">
+    News <span class="count">{counts.news}</span>
+  </button>
+  <button data-filter="social" class="chip" role="tab" aria-selected="false">
+    Social <span class="count">{counts.social}</span>
+  </button>
+</div>
+
+<style>
+  .filter-bar {
+    display: flex;
+    gap: var(--sp-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--sp-5);
+  }
+  .chip {
+    padding: var(--sp-2) var(--sp-4);
+    border-radius: var(--r-pill);
+    font-size: var(--fs-sm);
+    background: var(--c-bg-elev);
+    color: var(--c-fg-muted);
+  }
+  .chip.active {
+    background: var(--c-fg);
+    color: var(--c-bg);
+    border-color: var(--c-fg);
+  }
+  .count {
+    font-feature-settings: "tnum";
+    margin-left: var(--sp-1);
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLDivElement>(".filter-bar").forEach((bar) => {
+    const targetId = bar.getAttribute("data-target");
+    if (!targetId) return;
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    bar.addEventListener("click", (event) => {
+      const btn = (event.target as HTMLElement).closest("button[data-filter]");
+      if (!(btn instanceof HTMLButtonElement)) return;
+      const filter = btn.dataset.filter ?? "all";
+      bar.querySelectorAll("button").forEach((b) => {
+        const isActive = b === btn;
+        b.classList.toggle("active", isActive);
+        b.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+      target.setAttribute("data-filter", filter);
+    });
+  });
+</script>

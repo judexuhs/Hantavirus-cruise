@@ -1,0 +1,35 @@
+---
+import Base from "~/layouts/Base.astro";
+import TimelineList from "~/components/TimelineList.astro";
+---
+
+<Base
+  title="Timeline"
+  description="A chronological log of confirmed events in the Hantavirus cruise outbreak, each linked to a primary source."
+  current="timeline"
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Outbreak record</p>
+      <h1>Timeline</h1>
+      <p class="muted lede">
+        Every entry is dated, categorized, and where possible linked to a primary source. Items
+        marked <em>Pending review</em> are auto-suggested by the source pipeline and have not yet
+        been verified by a curator.
+      </p>
+
+      <TimelineList showPending={true} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+</style>

@@ -1,0 +1,17 @@
+{
+  "date": "2026-04-27T00:00:00Z",
+  "title": "British passenger medevaced from Ascension Island",
+  "body": "A British male passenger, whose condition had deteriorated at Ascension Island, is medically evacuated to South Africa and admitted to intensive care. Hantavirus is later confirmed by laboratory testing. Oceanwide Expeditions is informed of the second Dutch death the same day.",
+  "category": "case_update",
+  "sources": [
+    {
+      "label": "Oceanwide Expeditions — press timeline",
+      "url": "https://oceanwide-expeditions.com/press/press-update-timeline-of-the-medical-situation-on-board-the-m-v-hondius"
+    },
+    {
+      "label": "El País — MV Hondius logbook",
+      "url": "https://english.elpais.com/international/2026-05-06/logbook-of-the-mv-hondius-from-ushuaia-to-the-canary-islands-chronology-of-a-hantavirus-outbreak.html"
+    }
+  ],
+  "status": "confirmed"
+}
