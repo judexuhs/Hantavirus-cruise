@@ -9,6 +9,7 @@ import type { CollectionEntry } from "astro:content";
 import { stats, cruise, latestSnapshot } from "~/data";
 
 const SITE_NAME = "Hantavirus Cruise Tracker";
+const SITE_LOGO_PATH = "/logo.svg";
 
 interface BuildContext {
   /** Absolute origin, e.g. https://hondius.example.com */
@@ -30,7 +31,7 @@ export function websiteJsonLd(ctx: BuildContext) {
       url: ctx.origin + "/",
       logo: {
         "@type": "ImageObject",
-        url: ctx.origin + "/favicon.svg",
+        url: ctx.origin + SITE_LOGO_PATH,
       },
     },
     potentialAction: {
@@ -50,7 +51,7 @@ export function organizationJsonLd(ctx: BuildContext) {
     "@type": "Organization",
     name: SITE_NAME,
     url: ctx.origin + "/",
-    logo: ctx.origin + "/favicon.svg",
+    logo: ctx.origin + SITE_LOGO_PATH,
     sameAs: ["https://github.com/judexuhs/Hantavirus-cruise"],
   };
 }
