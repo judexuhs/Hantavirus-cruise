@@ -1,7 +1,24 @@
 {
-  "lastRunAt": "2026-05-07T00:00:00Z",
-  "perSourceCounts": {},
-  "errors": [],
-  "totalItems": 0,
+  "lastRunAt": "2026-05-07T19:50:41.016Z",
+  "perSourceCounts": {
+    "cdc": 21,
+    "google-news": 100,
+    "reddit": 0
+  },
+  "errors": [
+    {
+      "source": "who",
+      "message": "feed https://www.who.int/feeds/entity/csr/don/en/rss.xml responded 404 Not Found"
+    },
+    {
+      "source": "ecdc",
+      "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
+    },
+    {
+      "source": "reuters",
+      "message": "fetch failed"
+    }
+  ],
+  "totalItems": 105,
   "note": "Updated automatically by scripts/scrape/run.ts; do not edit by hand."
 }
