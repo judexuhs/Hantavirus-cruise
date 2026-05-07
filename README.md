@@ -1,7 +1,8 @@
 # Hantavirus Cruise Tracker
 
 An English-language, fact-first static tracker of the Hantavirus cruise outbreak. Built with
-Astro, hosted on GitHub Pages, refreshed every six hours by a GitHub Actions cron job.
+Astro, hosted on Vercel, refreshed every six hours by a GitHub Actions cron job that commits
+fresh source items back to the repo (Vercel auto-deploys on push).
 
 The site is **fully static**: no server, no database, no client-side framework. All the
 "liveness" comes from the scrape job committing fresh source items back to the repo, which
@@ -14,7 +15,7 @@ flowchart LR
   Fetchers --> Pipeline[Normalize / dedupe / score]
   Pipeline --> Files[src/content/news/*.json + src/data/news-meta.json]
   Files --> Commit[git commit and push]
-  Commit --> Pages[GitHub Pages rebuild]
+  Commit --> Vercel[Vercel auto-deploys on push]
 ```
 
 ## Quick start
@@ -73,17 +74,18 @@ scoring weight (`official=1.0`, `news=0.6`, `social=0.3`) and the badge color in
 
 ## Deployment
 
-The `Deploy to Pages` workflow builds and publishes on every push to `main`.
+Hosting is on **Vercel**. Connect the GitHub repo once on
+[vercel.com/new](https://vercel.com/new) — Vercel auto-detects Astro from `vercel.json`,
+builds with `pnpm build`, and deploys on every push to `main` (preview deployments on PRs).
 
-For a project-style URL (`https://OWNER.github.io/REPO/`) the defaults work. For a custom
-domain, set repo variables `SITE_URL` and `SITE_BASE`:
+For a custom domain, add it in the Vercel project's **Settings → Domains**. Vercel handles
+DNS hints, certificate issuance, and HTTPS automatically. Optionally set the `SITE_URL`
+environment variable to your canonical URL so RSS / sitemap absolute links match — without
+it, `astro.config.mjs` falls back to `VERCEL_PROJECT_PRODUCTION_URL`, which Vercel injects
+during the build.
 
-```
-SITE_URL  = https://example.org
-SITE_BASE = /
-```
-
-Then in repo **Settings → Pages**, choose **GitHub Actions** as the source.
+The scrape cron stays on GitHub Actions; it commits fresh JSON back to `main`, which Vercel
+picks up automatically and redeploys. No Vercel-side cron is needed.
 
 ## Editorial principles
 
