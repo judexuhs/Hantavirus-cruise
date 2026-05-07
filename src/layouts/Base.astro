@@ -3,6 +3,7 @@ import "~/styles/global.css";
 import SiteHeader from "~/components/SiteHeader.astro";
 import SiteFooter from "~/components/SiteFooter.astro";
 import JsonLd from "~/components/JsonLd.astro";
+import Analytics from "@vercel/analytics/astro";
 import { stats } from "~/data";
 import { websiteJsonLd, organizationJsonLd, outbreakJsonLd, breadcrumbsJsonLd } from "~/lib/seo";
 
@@ -135,5 +136,6 @@ const allStructured = [...baseStructured, ...structuredData];
       <slot />
     </main>
     <SiteFooter />
+    <Analytics />
   </body>
 </html>
