@@ -1,14 +1,8 @@
 ---
-import { newsMeta } from "~/data";
-import { formatDateTime } from "~/lib/format";
-
 const baseUrl = (path: string) => {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   return `${base}${path}`;
 };
-
-const errorCount = newsMeta.errors.length;
-const sourceEntries = Object.entries(newsMeta.perSourceCounts);
 ---
 
 <footer class="site-footer">
@@ -23,40 +17,15 @@ const sourceEntries = Object.entries(newsMeta.perSourceCounts);
     </div>
 
     <div class="col">
-      <h4>Pipeline status</h4>
-      <ul class="kv">
-        <li><span>Last refresh</span><span>{formatDateTime(newsMeta.lastRunAt)}</span></li>
-        <li><span>Total items</span><span>{newsMeta.totalItems}</span></li>
-        <li>
-          <span>Errors</span>
-          <span class={errorCount === 0 ? "ok" : "warn"}>
-            {errorCount === 0 ? "none" : `${errorCount} fetcher(s)`}
-          </span>
-        </li>
-      </ul>
-      {
-        sourceEntries.length > 0 && (
-          <details>
-            <summary class="muted">Per-source counts</summary>
-            <ul class="kv kv-tight">
-              {sourceEntries.map(([k, v]) => (
-                <li>
-                  <span>{k}</span>
-                  <span>{v}</span>
-                </li>
-              ))}
-            </ul>
-          </details>
-        )
-      }
-    </div>
-
-    <div class="col">
-      <h4>Repository</h4>
+      <h4>Browse</h4>
       <ul class="links">
-        <li><a href={baseUrl("/sources/")}>Source feed</a></li>
+        <li><a href={baseUrl("/")}>Overview</a></li>
         <li><a href={baseUrl("/timeline/")}>Timeline</a></li>
-        <li><a href="https://github.com/" rel="noopener external">View on GitHub</a></li>
+        <li><a href={baseUrl("/cases/")}>Cases and stats</a></li>
+        <li><a href={baseUrl("/cruise/")}>Cruise and route</a></li>
+        <li><a href={baseUrl("/sources/")}>Sources</a></li>
+        <li><a href={baseUrl("/about/")}>About hantavirus</a></li>
+        <li><a href={baseUrl("/faq/")}>FAQ</a></li>
       </ul>
       <p class="subtle small">
         Not affiliated with any health authority or cruise operator. Information is provided
@@ -75,7 +44,7 @@ const sourceEntries = Object.entries(newsMeta.perSourceCounts);
   }
   .footer-inner {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.4fr 1fr;
     gap: var(--sp-7);
   }
   h4 {
@@ -90,51 +59,16 @@ const sourceEntries = Object.entries(newsMeta.perSourceCounts);
     margin-bottom: var(--sp-3);
     font-size: var(--fs-sm);
   }
-  .kv {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    font-size: var(--fs-sm);
-  }
-  .kv li {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--sp-3);
-    padding: var(--sp-2) 0;
-    border-bottom: 1px dashed var(--c-border);
-  }
-  .kv li:last-child {
-    border-bottom: 0;
-  }
-  .kv span:first-child {
-    color: var(--c-fg-muted);
-  }
-  .kv-tight li {
-    padding: var(--sp-1) 0;
-  }
-  .ok {
-    color: var(--c-success);
-  }
-  .warn {
-    color: var(--c-warning);
-  }
   .links {
     list-style: none;
     padding: 0;
-    margin: 0 0 var(--sp-3);
+    margin: 0 0 var(--sp-4);
     font-size: var(--fs-sm);
   }
   .links li {
     margin-bottom: var(--sp-2);
   }
   .small {
-    font-size: var(--fs-xs);
-  }
-  details {
-    margin-top: var(--sp-2);
-  }
-  summary {
-    cursor: pointer;
     font-size: var(--fs-xs);
   }
   @media (max-width: 768px) {

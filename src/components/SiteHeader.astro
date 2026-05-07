@@ -1,7 +1,5 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
-import { newsMeta } from "~/data";
-import { relativeFromNow } from "~/lib/format";
 
 interface Props {
   current?: string;
@@ -23,8 +21,6 @@ const baseUrl = (path: string) => {
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   return `${base}${path}`;
 };
-
-const lastUpdated = newsMeta.lastRunAt;
 ---
 
 <header class="site-header">
@@ -56,10 +52,6 @@ const lastUpdated = newsMeta.lastRunAt;
     </nav>
 
     <div class="meta-cluster">
-      <span class="last-updated" title={lastUpdated}>
-        <span class="dot" aria-hidden="true"></span>
-        <span class="last-updated-label">Updated {relativeFromNow(lastUpdated)}</span>
-      </span>
       <ThemeToggle />
     </div>
   </div>
@@ -137,25 +129,6 @@ const lastUpdated = newsMeta.lastRunAt;
     display: inline-flex;
     align-items: center;
     gap: var(--sp-4);
-  }
-  .last-updated {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sp-2);
-    font-size: var(--fs-xs);
-    color: var(--c-fg-muted);
-    padding: 0 var(--sp-3);
-    height: 28px;
-    border: 1px solid var(--c-border);
-    border-radius: var(--r-pill);
-    background: var(--c-bg-elev);
-  }
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: var(--r-pill);
-    background: var(--c-success);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-success) 25%, transparent);
   }
   @media (max-width: 1024px) {
     .header-inner {
