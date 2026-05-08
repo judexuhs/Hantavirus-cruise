@@ -1,0 +1,144 @@
+---
+import Base from "~/layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { stats } from "~/data";
+
+const explainers = (await getCollection("explainer")).sort((a, b) => a.data.order - b.data.order);
+const anchorId = (entryId: string) => entryId.replace(/\.mdx$/i, "");
+---
+
+<Base
+  title="Guide"
+  description={`A practical guide to understanding hantavirus and following the ${stats.outbreak.name} tracker.`}
+  current="guide"
+  ogType="article"
+  breadcrumbs={[{ name: "Guide", path: "/guide/" }]}
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Guide</p>
+      <h1>Guide</h1>
+      <p class="muted lede">
+        Start here if you’re new: key questions, core explainers, and links to official advisories.
+        Everything on this site is informational only — always check your local public health
+        authority for decisions.
+      </p>
+
+      <div class="grid">
+        <section class="card" aria-labelledby="g-reading">
+          <h2 id="g-reading">Start with</h2>
+          <ul class="links">
+            <li><a href="/questions/">Key questions</a></li>
+            <li><a href="/advisories/">Official advisories</a></li>
+            <li><a href="/sources/">Sources (all coverage)</a></li>
+            <li><a href="/faq/">FAQ</a></li>
+          </ul>
+        </section>
+
+        <section class="card" aria-labelledby="g-reference">
+          <h2 id="g-reference">Reference</h2>
+          <ul class="links">
+            <li><a href="/glossary/">Glossary</a></li>
+            <li><a href="/timeline/">Timeline</a></li>
+            <li><a href="/cases/">Cases and stats</a></li>
+            <li><a href="/cruise/">Cruise and route</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="list" aria-labelledby="g-explainers">
+        <h2 id="g-explainers">Explainers</h2>
+        <p class="muted">Core background articles. Use the links to jump within this page.</p>
+        <ul class="links two-col">
+          {explainers.map((e) => (
+            <li>
+              <a href={`#${anchorId(e.id)}`}>{e.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <article class="prose explainers">
+        {explainers.map(async (entry) => {
+          const { Content } = await entry.render();
+          return (
+            <section class="entry">
+              <h2 id={anchorId(entry.id)}>{entry.data.title}</h2>
+              <Content />
+            </section>
+          );
+        })}
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-7);
+  }
+  .card {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+  }
+  .card h2 {
+    margin-bottom: var(--sp-3);
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .links li {
+    margin-bottom: var(--sp-2);
+  }
+  .list {
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--c-border);
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--sp-5);
+    margin-top: var(--sp-3);
+  }
+  .explainers {
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--c-border);
+    margin-top: var(--sp-7);
+  }
+  .entry {
+    margin-bottom: var(--sp-7);
+  }
+  .entry h2 {
+    margin-bottom: var(--sp-4);
+  }
+  .prose :global(ul) {
+    padding-left: var(--sp-5);
+  }
+  .prose :global(li) {
+    margin-bottom: var(--sp-2);
+  }
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -31,11 +31,7 @@ const baseUrl = (path: string) => {
         <li><a href={baseUrl("/cases/")}>Cases and stats</a></li>
         <li><a href={baseUrl("/cruise/")}>Cruise and route</a></li>
         <li><a href={baseUrl("/sources/")}>Sources</a></li>
-        <li><a href={baseUrl("/about/")}>About hantavirus</a></li>
-        <li><a href={baseUrl("/questions/")}>Key questions</a></li>
-        <li><a href={baseUrl("/glossary/")}>Glossary</a></li>
-        <li><a href={baseUrl("/advisories/")}>Official advisories</a></li>
-        <li><a href={baseUrl("/faq/")}>FAQ</a></li>
+        <li><a href={baseUrl("/guide/")}>Guide</a></li>
         <li><a href={baseUrl("/terms/")}>Terms of Service</a></li>
         <li><a href={baseUrl("/privacy/")}>Privacy Policy</a></li>
       </ul>
@@ -45,11 +41,20 @@ const baseUrl = (path: string) => {
       </p>
     </div>
   </div>
-  <div class="footer-badge" aria-label="Featured listing">
+  <div class="footer-badges" aria-label="Featured listings">
     <a href="https://twelve.tools" target="_blank" rel="noopener">
       <img
         src="https://twelve.tools/badge1-white.svg"
         alt="Featured on Twelve Tools"
+        width="200"
+        height="54"
+        loading="lazy"
+      />
+    </a>
+    <a href="https://wired.business" target="_blank" rel="noopener">
+      <img
+        src="https://wired.business/badge1-white.svg"
+        alt="Featured on Wired Business"
         width="200"
         height="54"
         loading="lazy"
@@ -94,20 +99,22 @@ const baseUrl = (path: string) => {
   .small {
     font-size: var(--fs-xs);
   }
-  .footer-badge {
+  .footer-badges {
     display: flex;
     justify-content: center;
     margin-top: var(--sp-6);
     opacity: 0.42;
+    gap: var(--sp-4);
+    flex-wrap: wrap;
   }
-  .footer-badge:hover,
-  .footer-badge:focus-within {
+  .footer-badges:hover,
+  .footer-badges:focus-within {
     opacity: 0.72;
   }
-  .footer-badge a {
+  .footer-badges a {
     display: inline-flex;
   }
-  .footer-badge img {
+  .footer-badges img {
     display: block;
     width: 160px;
     height: auto;
