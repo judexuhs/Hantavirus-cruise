@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-08T07:52:58.097Z",
+  "lastRunAt": "2026-05-08T14:10:08.036Z",
   "perSourceCounts": {
     "cdc": 21,
     "who": 50,
@@ -16,6 +16,6 @@
       "message": "feed http://feeds.reuters.com/reuters/healthNews fetch failed: fetch failed (ENOTFOUND: getaddrinfo ENOTFOUND feeds.reuters.com)"
     }
   ],
-  "totalItems": 151,
+  "totalItems": 178,
   "note": "Updated automatically by scripts/scrape/run.ts; do not edit by hand."
 }
