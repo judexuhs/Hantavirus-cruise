@@ -1,0 +1,154 @@
+---
+import Base from "~/layouts/Base.astro";
+import { stats } from "~/data";
+---
+
+<Base
+  title="Glossary"
+  description={`A plain-English glossary for outbreak reporting and hantavirus terms used across the ${stats.outbreak.name} tracker.`}
+  current="glossary"
+  ogType="article"
+  breadcrumbs={[{ name: "Glossary", path: "/glossary/" }]}
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Reference</p>
+      <h1>Glossary</h1>
+      <p class="muted lede">
+        A quick reference to the terms you’ll see in official notices and news coverage. This is
+        informational only and not medical advice.
+      </p>
+
+      <article class="prose">
+        <dl class="glossary">
+          <dt>ANDV (Andes virus)</dt>
+          <dd>
+            A hantavirus species found in South America. Unlike most hantaviruses, Andes virus has
+            documented person-to-person transmission in some outbreaks.
+          </dd>
+
+          <dt>Case definition</dt>
+          <dd>
+            The criteria used to classify someone as a suspected, probable, or confirmed case. It
+            can change as investigators learn more about an event.
+          </dd>
+
+          <dt>Confirmed case</dt>
+          <dd>
+            A case that meets a public health authority’s confirmation criteria—typically including
+            laboratory evidence.
+          </dd>
+
+          <dt>Contact tracing</dt>
+          <dd>
+            The process of identifying and notifying people who may have been exposed so they can
+            monitor symptoms, test, or isolate if advised.
+          </dd>
+
+          <dt>Disease Outbreak News (DON)</dt>
+          <dd>
+            WHO’s public reports about selected acute public health events. Not every event is
+            published as a DON.
+          </dd>
+
+          <dt>ECDC</dt>
+          <dd>
+            European Centre for Disease Prevention and Control. An EU agency that publishes risk
+            assessments and event updates relevant to Europe.
+          </dd>
+
+          <dt>Exposure</dt>
+          <dd>
+            A situation where someone may have come into contact with the virus (for example,
+            through contact with contaminated rodent excreta, or close contact in rare
+            person-to-person contexts depending on strain).
+          </dd>
+
+          <dt>Hantavirus</dt>
+          <dd>
+            A family of viruses usually carried by rodents. Human illness often occurs after
+            breathing in aerosolized particles from rodent urine, droppings, or saliva.
+          </dd>
+
+          <dt>HFRS</dt>
+          <dd>
+            Hemorrhagic fever with renal syndrome. A hantavirus disease form seen mainly in Europe
+            and Asia, often affecting kidneys.
+          </dd>
+
+          <dt>HPS</dt>
+          <dd>
+            Hantavirus pulmonary syndrome. A severe disease form seen mainly in the Americas, often
+            involving respiratory failure.
+          </dd>
+
+          <dt>Incubation period</dt>
+          <dd>
+            Time from exposure to symptom onset. For hantaviruses, incubation can be weeks and may
+            vary by strain and circumstances.
+          </dd>
+
+          <dt>Isolation vs quarantine</dt>
+          <dd>
+            Isolation separates people who are sick; quarantine separates people who were exposed
+            and may become sick.
+          </dd>
+
+          <dt>Official source</dt>
+          <dd>
+            Publications from public health authorities and international organizations (for
+            example: CDC, WHO, ECDC, national ministries of health) or the operator’s formal
+            statements.
+          </dd>
+
+          <dt>Pending review</dt>
+          <dd>
+            A label used on this site for items that were auto-collected by the pipeline but have
+            not been manually verified by a curator.
+          </dd>
+
+          <dt>Rodent-borne</dt>
+          <dd>
+            Transmitted from rodents to humans (directly or indirectly). Many hantavirus infections
+            are rodent-borne rather than spread between people.
+          </dd>
+
+          <dt>Source-linked</dt>
+          <dd>
+            A design principle of this tracker: key claims should link to a primary document or
+            clearly identify the origin.
+          </dd>
+
+          <dt>Under observation</dt>
+          <dd>
+            People being monitored due to possible exposure or symptoms; the exact meaning depends
+            on the reporting authority.
+          </dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .glossary {
+    margin: 0;
+  }
+  .glossary dt {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    margin-top: var(--sp-5);
+  }
+  .glossary dd {
+    margin: var(--sp-2) 0 0;
+    color: var(--c-fg);
+  }
+</style>

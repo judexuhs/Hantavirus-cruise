@@ -1,0 +1,155 @@
+---
+import Base from "~/layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { stats } from "~/data";
+
+const entries = (await getCollection("faq")).sort((a, b) => a.data.order - b.data.order);
+
+const groupOrder: { id: string; title: string; description: string; tags: string[] }[] = [
+  {
+    id: "risk",
+    title: "Risk & who is at risk",
+    description: "How worried should I be, and who should take extra precautions?",
+    tags: ["risk", "exposure", "at-risk"],
+  },
+  {
+    id: "transmission",
+    title: "Transmission",
+    description: "How hantavirus spreads, what is known, and what is uncertain.",
+    tags: ["transmission", "spread"],
+  },
+  {
+    id: "symptoms",
+    title: "Symptoms & incubation",
+    description: "What to watch for and typical timelines.",
+    tags: ["symptoms", "incubation"],
+  },
+  {
+    id: "testing",
+    title: "Testing & healthcare",
+    description: "Where to get tested and what to do if you feel unwell.",
+    tags: ["testing", "treatment", "care"],
+  },
+  {
+    id: "travel",
+    title: "Travel decisions",
+    description: "Travel advice, cancellations, and where to look for official guidance.",
+    tags: ["travel", "advice"],
+  },
+  {
+    id: "hygiene",
+    title: "Cleaning & hygiene",
+    description: "Disinfection and practical precautions.",
+    tags: ["hygiene", "disinfection"],
+  },
+  {
+    id: "about-site",
+    title: "About this tracker",
+    description: "How this site works and what it includes.",
+    tags: ["site", "this-site", "methodology"],
+  },
+];
+
+const hasAnyTag = (entryTags: string[], wanted: string[]) =>
+  entryTags.some((t) => wanted.includes(t.toLowerCase()));
+
+const groups = groupOrder.map((g) => {
+  const items = entries.filter((e) => hasAnyTag((e.data.tags ?? []).map((t) => t.toLowerCase()), g.tags));
+  return { ...g, items };
+});
+
+const ungrouped = entries.filter((e) => !groups.some((g) => g.items.includes(e)));
+---
+
+<Base
+  title="Key questions"
+  description={`High-stakes questions and evidence-based answers about the ${stats.outbreak.name} — risk, transmission, symptoms, testing, travel, and official advisories.`}
+  current="questions"
+  ogType="article"
+  breadcrumbs={[{ name: "Key questions", path: "/questions/" }]}
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="eyebrow">Quick guide</p>
+      <h1>Key questions</h1>
+      <p class="muted lede">
+        This page is an index of the most common, high-stakes questions we see from passengers,
+        crew, and the public. Each link jumps to the full answer on the FAQ page.
+      </p>
+
+      <div class="toc">
+        {groups.map((g) => (
+          <section class="toc-group" aria-labelledby={`g-${g.id}`}>
+            <h2 id={`g-${g.id}`}>{g.title}</h2>
+            <p class="muted">{g.description}</p>
+            {g.items.length === 0 ? (
+              <p class="subtle small">No entries yet.</p>
+            ) : (
+              <ul class="links">
+                {g.items.map((e) => (
+                  <li>
+                    <a href={`/faq/#${e.id}`}>{e.data.question}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+
+        {ungrouped.length > 0 && (
+          <section class="toc-group" aria-labelledby="g-more">
+            <h2 id="g-more">More</h2>
+            <ul class="links">
+              {ungrouped.map((e) => (
+                <li>
+                  <a href={`/faq/#${e.id}`}>{e.data.question}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <p class="subtle small footnote">
+        Not medical advice. If you have symptoms or urgent concerns, contact local health services
+        and consult official guidance.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .toc-group {
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--c-border);
+    margin-top: var(--sp-6);
+  }
+  .toc-group:first-child {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-3) 0 0;
+    font-size: var(--fs-sm);
+  }
+  .links li {
+    margin-bottom: var(--sp-2);
+  }
+  .small {
+    font-size: var(--fs-xs);
+  }
+  .footnote {
+    margin-top: var(--sp-7);
+  }
+</style>

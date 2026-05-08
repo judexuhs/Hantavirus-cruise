@@ -28,8 +28,10 @@ const structured = [faqJsonLd(entries)];
           entries.map(async (entry) => {
             const { Content } = await entry.render();
             return (
-              <details class="faq-item">
-                <summary>{entry.data.question}</summary>
+              <details class="faq-item" id={entry.id}>
+                <summary>
+                  <a class="q-link" href={`#${entry.id}`}>{entry.data.question}</a>
+                </summary>
                 <div class="answer">
                   <Content />
                 </div>
@@ -68,6 +70,13 @@ const structured = [faqJsonLd(entries)];
     align-items: center;
     justify-content: space-between;
     gap: var(--sp-4);
+  }
+  .q-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .q-link:hover {
+    text-decoration: underline;
   }
   summary::-webkit-details-marker {
     display: none;
