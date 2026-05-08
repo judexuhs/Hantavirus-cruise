@@ -30,12 +30,24 @@ export const redditFetcher: Fetcher = {
       const url = `https://www.reddit.com/r/${sub}/search.json?q=${encodeURIComponent(
         QUERY,
       )}&restrict_sr=on&sort=new&limit=25`;
-      const res = await fetch(url, {
-        headers: {
-          "user-agent": "hantavirus-cruise-tracker/0.1 (feed-aggregator)",
-          accept: "application/json",
-        },
-      });
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 4000);
+      let res: Response | undefined;
+      try {
+        res = await fetch(url, {
+          signal: controller.signal,
+          headers: {
+            "user-agent": "hantavirus-cruise-tracker/0.1 (feed-aggregator)",
+            accept: "application/json",
+          },
+        });
+      } catch {
+        // Reddit can time out / be blocked in some networks; skip this subreddit.
+        continue;
+      } finally {
+        clearTimeout(id);
+      }
+
       if (!res.ok) {
         // 403/429 happens on Reddit when run from CI without auth — skip the sub
         // rather than failing the whole fetcher.

@@ -10,6 +10,7 @@ import { buildItem, toExcerpt } from "../pipeline/normalize.ts";
 const FEEDS = [
   "https://www.reutersagency.com/feed/?best-topics=health&post_type=best",
   "https://feeds.reuters.com/reuters/healthNews",
+  "http://feeds.reuters.com/reuters/healthNews",
 ];
 
 export const reutersFetcher: Fetcher = {
@@ -20,7 +21,7 @@ export const reutersFetcher: Fetcher = {
     let lastErr: Error | undefined;
     for (const url of FEEDS) {
       try {
-        const raw = await fetchFeed(url);
+        const raw = await fetchFeed(url, { timeoutMs: 4000 });
         for (const r of raw) {
           if (!r.title || !r.link) continue;
           out.push(

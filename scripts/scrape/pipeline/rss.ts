@@ -20,15 +20,49 @@ const parser = new XMLParser({
   trimValues: true,
 });
 
-export async function fetchFeed(url: string, headers: Record<string, string> = {}): Promise<RawFeedItem[]> {
-  const res = await fetch(url, {
-    headers: {
-      "user-agent":
-        "hantavirus-cruise-tracker/0.1 (+https://github.com/) feed-aggregator",
-      accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
-      ...headers,
-    },
-  });
+export type FetchFeedOptions = {
+  headers?: Record<string, string>;
+  timeoutMs?: number;
+};
+
+function withTimeout(timeoutMs: number | undefined) {
+  if (!timeoutMs) return { signal: undefined as AbortSignal | undefined, clear: () => {} };
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  return { signal: controller.signal, clear: () => clearTimeout(id) };
+}
+
+function formatFetchError(err: unknown): string {
+  if (!(err instanceof Error)) return String(err);
+  const cause = (err as Error & { cause?: unknown }).cause as
+    | { code?: string; message?: string }
+    | undefined;
+  if (cause?.code) return `${err.message} (${cause.code}${cause.message ? `: ${cause.message}` : ""})`;
+  return err.message;
+}
+
+export async function fetchFeed(
+  url: string,
+  options: FetchFeedOptions | Record<string, string> = {},
+): Promise<RawFeedItem[]> {
+  const headers = ("headers" in options ? options.headers : options) ?? {};
+  const timeoutMs = "timeoutMs" in options ? options.timeoutMs : undefined;
+  const { signal, clear } = withTimeout(timeoutMs);
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      signal,
+      headers: {
+        "user-agent": "hantavirus-cruise-tracker/0.1 (+https://github.com/) feed-aggregator",
+        accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+        ...headers,
+      },
+    });
+  } catch (err) {
+    throw new Error(`feed ${url} fetch failed: ${formatFetchError(err)}`);
+  } finally {
+    clear();
+  }
   if (!res.ok) {
     throw new Error(`feed ${url} responded ${res.status} ${res.statusText}`);
   }
