@@ -1,22 +1,19 @@
 {
-  "lastRunAt": "2026-05-07T19:50:41.016Z",
+  "lastRunAt": "2026-05-08T03:39:45.072Z",
   "perSourceCounts": {
     "cdc": 21,
-    "google-news": 100,
+    "who": 50,
+    "ecdc": 0,
     "reddit": 0
   },
   "errors": [
     {
-      "source": "who",
-      "message": "feed https://www.who.int/feeds/entity/csr/don/en/rss.xml responded 404 Not Found"
-    },
-    {
-      "source": "ecdc",
-      "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
+      "source": "google-news",
+      "message": "feed https://news.google.com/rss/search?q=(%22hantavirus%22)%20AND%20(cruise%20OR%20ship%20OR%20voyage%20OR%20vessel)&hl=en-US&gl=US&ceid=US:en fetch failed: This operation was aborted"
     },
     {
       "source": "reuters",
-      "message": "fetch failed"
+      "message": "feed http://feeds.reuters.com/reuters/healthNews fetch failed: This operation was aborted"
     }
   ],
   "totalItems": 105,
