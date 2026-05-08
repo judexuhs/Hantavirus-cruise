@@ -41,12 +41,20 @@ function formatFetchError(err: unknown): string {
   return err.message;
 }
 
+export async function fetchFeed(url: string): Promise<RawFeedItem[]>;
+export async function fetchFeed(url: string, headers: Record<string, string>): Promise<RawFeedItem[]>;
+export async function fetchFeed(url: string, options: FetchFeedOptions): Promise<RawFeedItem[]>;
 export async function fetchFeed(
   url: string,
-  options: FetchFeedOptions | Record<string, string> = {},
+  headersOrOptions: Record<string, string> | FetchFeedOptions = {},
 ): Promise<RawFeedItem[]> {
-  const headers = ("headers" in options ? options.headers : options) ?? {};
-  const timeoutMs = "timeoutMs" in options ? options.timeoutMs : undefined;
+  const isFetchFeedOptions = (v: unknown): v is FetchFeedOptions =>
+    typeof v === "object" && v !== null && ("timeoutMs" in (v as object) || "headers" in (v as object));
+
+  const headers: Record<string, string> = isFetchFeedOptions(headersOrOptions)
+    ? headersOrOptions.headers ?? {}
+    : headersOrOptions;
+  const timeoutMs = isFetchFeedOptions(headersOrOptions) ? headersOrOptions.timeoutMs : undefined;
   const { signal, clear } = withTimeout(timeoutMs);
   let res: Response;
   try {
