@@ -48,6 +48,9 @@ jobs:
             pnpm scrape
           fi
 
+      - name: Validate build output
+        run: pnpm build
+
       - name: Commit and push if changed
         if: github.event_name != 'pull_request'
         run: |

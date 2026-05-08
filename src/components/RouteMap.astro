@@ -12,21 +12,29 @@ const known = ports.filter(
   (p): p is PortStop & { lat: number; lon: number } => p.lat !== null && p.lon !== null,
 );
 
-let svgPoints: { x: number; y: number; port: PortStop }[] = [];
+const routePoints = known.map((p, i) => ({
+  name: p.name,
+  country: p.country,
+  lat: p.lat,
+  lon: p.lon,
+  arrival: p.arrival,
+  departure: p.departure,
+  note: p.note,
+  isCurrent: i === known.length - 1,
+}));
 
-if (known.length > 0) {
-  const minLat = Math.min(...known.map((p) => p.lat)) - 5;
-  const maxLat = Math.max(...known.map((p) => p.lat)) + 5;
-  const minLon = Math.min(...known.map((p) => p.lon)) - 5;
-  const maxLon = Math.max(...known.map((p) => p.lon)) + 5;
-  const w = 800;
-  const h = 360;
-  svgPoints = known.map((p) => ({
-    x: ((p.lon - minLon) / (maxLon - minLon)) * w,
-    y: h - ((p.lat - minLat) / (maxLat - minLat)) * h,
-    port: p,
-  }));
-}
+const overlayW = 1000;
+const overlayH = 460;
+const mercatorY = (lat: number) => {
+  const rad = (lat * Math.PI) / 180;
+  const value = Math.log(Math.tan(Math.PI / 4 + rad / 2));
+  return (1 - value / Math.PI) / 2;
+};
+const overlayPoints = known.map((p) => ({
+  x: ((p.lon + 180) / 360) * overlayW,
+  y: mercatorY(p.lat) * overlayH,
+  name: p.name,
+}));
 ---
 
 {
@@ -39,42 +47,58 @@ if (known.length > 0) {
     </div>
   ) : (
     <figure class="route-map">
-      <svg
-        viewBox="0 0 800 360"
-        xmlns="http://www.w3.org/2000/svg"
-        role="img"
-        aria-label="Approximate cruise route"
+      <div class="map-head">
+        <h3>Itinerary</h3>
+        <span>OSM · grayscale</span>
+      </div>
+      <div
+        id="route-map"
+        class="leaflet-route-map"
+        aria-label="Approximate MV Hondius itinerary map"
       >
-        <rect width="800" height="360" fill="var(--c-bg-sunk)" />
-        <g class="grid" stroke="var(--c-border)" stroke-width="0.5">
-          <line x1="0" y1="120" x2="800" y2="120" />
-          <line x1="0" y1="240" x2="800" y2="240" />
-          <line x1="200" y1="0" x2="200" y2="360" />
-          <line x1="400" y1="0" x2="400" y2="360" />
-          <line x1="600" y1="0" x2="600" y2="360" />
-        </g>
-        {svgPoints.length > 1 && (
+        <svg
+          class="route-overlay"
+          viewBox={`0 0 ${overlayW} ${overlayH}`}
+          role="img"
+          aria-label="MV Hondius route from Ushuaia to Tenerife"
+        >
           <polyline
-            points={svgPoints.map((s) => `${s.x},${s.y}`).join(" ")}
+            points={overlayPoints.map((p) => `${p.x},${p.y}`).join(" ")}
             fill="none"
-            stroke="var(--c-accent)"
-            stroke-width="2"
-            stroke-dasharray="4 4"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-dasharray="10 10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
-        )}
-        {svgPoints.map((s, i) => (
-          <g>
-            <circle cx={s.x} cy={s.y} r="6" fill="var(--c-accent)" />
-            <circle cx={s.x} cy={s.y} r="11" fill="none" stroke="var(--c-accent)" opacity="0.4" />
-            <text x={s.x + 12} y={s.y + 4} fill="var(--c-fg)" font-size="12">
-              {i + 1}. {s.port.name}
-            </text>
-          </g>
-        ))}
-      </svg>
+          {overlayPoints.map((p, i) => (
+            <g>
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={i === overlayPoints.length - 1 ? 9 : 8}
+                fill={i === overlayPoints.length - 1 ? "currentColor" : "var(--c-bg)"}
+                stroke="currentColor"
+                stroke-width="3"
+              />
+              {(i === 0 || i === 6 || i === overlayPoints.length - 1) && (
+                <text x={p.x + 12} y={p.y - 10}>
+                  {p.name.replace(" (anchored offshore)", "").replace(" anchorage (planned)", "")}
+                </text>
+              )}
+            </g>
+          ))}
+        </svg>
+      </div>
+      <script
+        id="route-map-data"
+        type="application/json"
+        set:html={JSON.stringify(routePoints)}
+        is:inline
+      />
       <figcaption class="subtle">
-        Approximate route. Coordinates are degrees latitude/longitude on a simple equirectangular
-        projection — illustrative only, not navigational.
+        Approximate itinerary based on reported ports of call. This is not live AIS tracking or
+        navigational data.
       </figcaption>
 
       <ol class="port-list">
@@ -99,16 +123,180 @@ if (known.length > 0) {
   )
 }
 
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+  is:inline></script>
+
+<script is:inline>
+  (() => {
+    function initRouteMap() {
+      const el = document.getElementById("route-map");
+      const data = document.getElementById("route-map-data");
+      if (!el || !data || !window.L || el.dataset.initialized === "true") return;
+
+      let points = [];
+      try {
+        points = JSON.parse(data.textContent || "[]");
+      } catch (err) {
+        console.error("Route map data could not be parsed", err);
+      }
+      if (points.length === 0) return;
+
+      el.dataset.initialized = "true";
+
+      const map = window.L.map(el, {
+        zoomControl: true,
+        scrollWheelZoom: false,
+        attributionControl: true,
+        worldCopyJump: true,
+      });
+
+      window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 7,
+        minZoom: 2,
+        attribution: "&copy; OpenStreetMap contributors",
+        className: "grayscale-tiles",
+      }).addTo(map);
+
+      const latLngs = points.map((p) => [p.lat, p.lon]);
+
+      window.L.polyline(latLngs, {
+        color: "#111",
+        weight: 4,
+        opacity: 0.95,
+        dashArray: "8 8",
+        lineJoin: "round",
+        pane: "overlayPane",
+      }).addTo(map);
+
+      points.forEach((p, i) => {
+        const marker = window.L.circleMarker([p.lat, p.lon], {
+          radius: p.isCurrent ? 9 : 8,
+          color: "#111",
+          weight: 3,
+          fillColor: p.isCurrent ? "#111" : "#fff",
+          fillOpacity: 1,
+          pane: "markerPane",
+        }).addTo(map);
+
+        const dates = [
+          p.arrival
+            ? `Arr ${new Date(p.arrival).toLocaleDateString("en", { month: "short", day: "numeric" })}`
+            : "",
+          p.departure
+            ? `Dep ${new Date(p.departure).toLocaleDateString("en", { month: "short", day: "numeric" })}`
+            : "",
+        ]
+          .filter(Boolean)
+          .join(" · ");
+
+        marker.bindPopup(
+          `<strong>${i + 1}. ${p.name}</strong><br>${p.country}${dates ? `<br>${dates}` : ""}`,
+        );
+      });
+
+      map.setView([0, 0], 2);
+      window.setTimeout(() => map.invalidateSize(), 0);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initRouteMap);
+    } else {
+      initRouteMap();
+    }
+  })();
+</script>
+
 <style>
   .route-map {
     margin: 0;
   }
-  svg {
+  .map-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-3);
+  }
+  .map-head h3 {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xl);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .map-head span {
+    color: var(--c-fg-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .leaflet-route-map {
+    position: relative;
+    overflow: hidden;
     width: 100%;
-    height: auto;
-    border: 1px solid var(--c-border);
-    border-radius: var(--r-md);
+    height: 460px;
+    min-height: 460px;
+    border: 2px solid var(--c-fg);
+    border-radius: 0;
     background: var(--c-bg-sunk);
+  }
+  .route-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 650;
+    width: 100%;
+    height: 100%;
+    color: #111;
+    pointer-events: none;
+  }
+  .route-overlay text {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 700;
+    fill: currentColor;
+    stroke: var(--c-bg);
+    stroke-width: 5px;
+    paint-order: stroke;
+  }
+  .leaflet-route-map :global(.leaflet-pane),
+  .leaflet-route-map :global(.leaflet-tile),
+  .leaflet-route-map :global(.leaflet-marker-icon),
+  .leaflet-route-map :global(.leaflet-marker-shadow),
+  .leaflet-route-map :global(.leaflet-tile-container),
+  .leaflet-route-map :global(.leaflet-pane > svg),
+  .leaflet-route-map :global(.leaflet-pane > canvas),
+  .leaflet-route-map :global(.leaflet-zoom-box),
+  .leaflet-route-map :global(.leaflet-image-layer),
+  .leaflet-route-map :global(.leaflet-layer) {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .leaflet-route-map :global(.leaflet-container) {
+    overflow: hidden;
+  }
+  .leaflet-route-map :global(.leaflet-control) {
+    position: relative;
+    z-index: 800;
+    pointer-events: visiblePainted;
+    pointer-events: auto;
+  }
+  .leaflet-route-map :global(.grayscale-tiles) {
+    filter: grayscale(1) contrast(0.9) brightness(1.08);
+  }
+  .leaflet-route-map :global(.leaflet-control-zoom a) {
+    color: #111;
+    text-decoration: none;
+  }
+  .leaflet-route-map :global(.leaflet-popup-content-wrapper) {
+    border-radius: 0;
+    border: 1px solid #111;
+    box-shadow: none;
+    font-family: var(--font-sans);
   }
   figcaption {
     margin-top: var(--sp-2);
@@ -154,6 +342,10 @@ if (known.length > 0) {
     margin-top: var(--sp-1);
   }
   @media (max-width: 768px) {
+    .leaflet-route-map {
+      height: 340px;
+      min-height: 340px;
+    }
     .port-list {
       grid-template-columns: 1fr;
     }

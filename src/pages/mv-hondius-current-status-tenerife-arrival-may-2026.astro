@@ -1,0 +1,203 @@
+---
+import Base from "~/layouts/Base.astro";
+import CasesGrid from "~/components/CasesGrid.astro";
+import RouteMap from "~/components/RouteMap.astro";
+import TimelineList from "~/components/TimelineList.astro";
+import { cruise, latestSnapshot, newsMeta, stats } from "~/data";
+import { formatDate, formatDateTime } from "~/lib/format";
+
+const snapshot = latestSnapshot();
+const tenerife = cruise.ports.find((port) => port.name.toLowerCase().includes("tenerife"));
+const origin = new URL(Astro.url.pathname, Astro.site).origin;
+const pageUrl = origin + "/mv-hondius-current-status-tenerife-arrival-may-2026/";
+const structured = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "MV Hondius current status and Tenerife arrival, May 2026",
+    description:
+      "Current status of MV Hondius, planned Tenerife arrival in May 2026, outbreak case counts, quarantine notes, and source-linked timeline.",
+    dateModified: newsMeta.lastRunAt,
+    inLanguage: "en",
+    mainEntityOfPage: pageUrl,
+    author: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    publisher: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    about: [
+      { "@type": "Vehicle", name: cruise.ship.name, identifier: cruise.ship.imo },
+      { "@type": "Place", name: "Granadilla, Tenerife" },
+      { "@type": "MedicalCondition", name: "Hantavirus disease" },
+    ],
+  },
+];
+---
+
+<Base
+  title="MV Hondius current status: Tenerife arrival May 2026"
+  description="Current MV Hondius status for the May 2026 Tenerife arrival: planned Granadilla docking, quarantine and repatriation notes, case counts, deaths, and source-linked timeline."
+  ogType="article"
+  structuredData={structured}
+  modifiedTime={newsMeta.lastRunAt}
+  breadcrumbs={[
+    {
+      name: "MV Hondius Tenerife status",
+      path: "/mv-hondius-current-status-tenerife-arrival-may-2026/",
+    },
+  ]}
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">MV Hondius status</p>
+      <h1>MV Hondius current status: Tenerife arrival May 2026</h1>
+      <p class="muted lede">
+        The {cruise.ship.name}, operated by {cruise.ship.operator}, is the vessel at the center of
+        the current hantavirus outbreak. This page tracks its planned Tenerife arrival, reported
+        case figures, and the latest curated status notes.
+      </p>
+
+      <div class="status-layout">
+        <section class="status-panel" aria-labelledby="arrival-heading">
+          <h2 id="arrival-heading">Tenerife arrival</h2>
+          <dl>
+            <dt>Port</dt>
+            <dd>{tenerife?.name ?? "Granadilla, Tenerife"}</dd>
+            <dt>Planned arrival</dt>
+            <dd>
+              {
+                tenerife?.arrival ? (
+                  <time datetime={tenerife.arrival}>{formatDateTime(tenerife.arrival)}</time>
+                ) : (
+                  "Pending official update"
+                )
+              }
+            </dd>
+            <dt>Ship status</dt>
+            <dd>
+              {stats.outbreak.status === "active" ? "Active outbreak" : stats.outbreak.status}
+            </dd>
+          </dl>
+          {tenerife?.note && <p class="subtle small">{tenerife.note}</p>}
+        </section>
+
+        <section class="status-panel" aria-labelledby="latest-heading">
+          <h2 id="latest-heading">Latest outbreak snapshot</h2>
+          {
+            snapshot ? (
+              <>
+                <p>
+                  As of <strong>{formatDate(snapshot.asOf)}</strong>, the tracker records{" "}
+                  <strong>{snapshot.confirmed}</strong> confirmed cases,{" "}
+                  <strong>{snapshot.suspected}</strong> suspected cases, and{" "}
+                  <strong>{snapshot.deaths}</strong> deaths.
+                </p>
+                <p class="subtle small">{snapshot.note}</p>
+              </>
+            ) : (
+              <p>No case snapshot has been recorded yet.</p>
+            )
+          }
+        </section>
+      </div>
+
+      <section class="section-inline" aria-labelledby="route-heading">
+        <h2 id="route-heading">Route and current track</h2>
+        <RouteMap ports={cruise.ports} />
+      </section>
+
+      <h2>Case counts</h2>
+      <CasesGrid />
+
+      <section class="section-inline" aria-labelledby="what-next">
+        <h2 id="what-next">What happens on arrival?</h2>
+        <p>
+          Current source-linked notes say Spain agreed to receive the ship at Granadilla, a lower
+          traffic port near Tenerife South Airport. Symptomatic and Spanish-national passengers were
+          expected to quarantine at a military hospital in Madrid, while foreign passengers would be
+          repatriated through EU civil protection mechanisms.
+        </p>
+        <p>
+          Because official handling can change quickly, this page links to the broader timeline,
+          official advisories, and latest source feed below.
+        </p>
+      </section>
+
+      <div class="link-grid" aria-label="Related pages">
+        <a href="/timeline/">Full timeline</a>
+        <a href="/cruise/">Cruise route and ship details</a>
+        <a href="/advisories/">Official advisories</a>
+        <a href="/sources/">Latest sources</a>
+      </div>
+
+      <section class="section-inline" aria-labelledby="timeline-heading">
+        <h2 id="timeline-heading">Recent timeline</h2>
+        <TimelineList limit={6} showPending={true} />
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .status-layout {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-7);
+  }
+  .status-panel {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+  }
+  .status-panel h2 {
+    font-size: var(--fs-lg);
+  }
+  dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--sp-2) var(--sp-4);
+    margin: 0 0 var(--sp-4);
+  }
+  dt {
+    color: var(--c-fg-muted);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  dd {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .small {
+    font-size: var(--fs-xs);
+  }
+  .section-inline {
+    margin-top: var(--sp-7);
+  }
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-3);
+    margin-top: var(--sp-6);
+  }
+  .link-grid a {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4);
+    text-decoration: none;
+  }
+  .link-grid a:hover {
+    border-color: var(--c-border-strong);
+  }
+  @media (max-width: 900px) {
+    .status-layout,
+    .link-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

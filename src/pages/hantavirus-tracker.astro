@@ -1,0 +1,189 @@
+---
+import Base from "~/layouts/Base.astro";
+import CasesGrid from "~/components/CasesGrid.astro";
+import NewsCard from "~/components/NewsCard.astro";
+import { getCollection } from "astro:content";
+import { cruise, latestSnapshot, newsMeta, stats } from "~/data";
+import { formatDateTime } from "~/lib/format";
+
+const snapshot = latestSnapshot();
+const allNews = await getCollection("news");
+const recentNews = allNews
+  .map((entry) => entry.data)
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+  .slice(0, 3);
+
+const origin = new URL(Astro.url.pathname, Astro.site).origin;
+const structured = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "Hantavirus tracker",
+    description:
+      "Current MV Hondius hantavirus outbreak status, case counts, timeline, official advisories, and source-linked news updates.",
+    dateModified: newsMeta.lastRunAt,
+    inLanguage: "en",
+    mainEntityOfPage: origin + "/hantavirus-tracker/",
+    author: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    publisher: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    about: [
+      { "@type": "MedicalCondition", name: "Hantavirus disease" },
+      { "@type": "Event", name: stats.outbreak.name },
+    ],
+  },
+];
+---
+
+<Base
+  title="Hantavirus tracker"
+  description="Live-source hantavirus tracker for the MV Hondius outbreak: current case counts, deaths, ship status, Tenerife arrival details, timeline, and official updates."
+  ogType="article"
+  structuredData={structured}
+  modifiedTime={newsMeta.lastRunAt}
+  breadcrumbs={[{ name: "Hantavirus tracker", path: "/hantavirus-tracker/" }]}
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Live-source outbreak monitor</p>
+      <h1>Hantavirus tracker</h1>
+      <p class="muted lede">
+        A source-linked tracker for the {stats.outbreak.shipName} hantavirus outbreak, combining curated
+        case counts, ship status, timeline entries, official advisories, and automatically refreshed source
+        coverage.
+      </p>
+
+      <div class="summary-grid">
+        <section class="summary-panel" aria-labelledby="tracker-status">
+          <h2 id="tracker-status">Current status</h2>
+          <p>
+            <strong
+              >{
+                stats.outbreak.status === "active" ? "Active outbreak" : stats.outbreak.status
+              }</strong
+            >
+            {" "}aboard {stats.outbreak.shipName}. {cruise.voyage.currentStatus}
+          </p>
+          <p class="subtle small">
+            Status updated <time datetime={stats.outbreak.statusUpdatedAt}
+              >{formatDateTime(stats.outbreak.statusUpdatedAt)}</time
+            >.
+          </p>
+        </section>
+
+        <section class="summary-panel" aria-labelledby="tracker-refresh">
+          <h2 id="tracker-refresh">Data refresh</h2>
+          <p>
+            Source coverage is refreshed by an automated job every six hours. The most recent source
+            run completed <strong>{formatDateTime(newsMeta.lastRunAt)}</strong>.
+          </p>
+          <p class="subtle small">
+            Case counts and timeline entries remain curated so revised official numbers are not
+            silently rewritten.
+          </p>
+        </section>
+      </div>
+
+      <h2>Case snapshot</h2>
+      <CasesGrid />
+      {snapshot?.note && <p class="subtle footnote">{snapshot.note}</p>}
+
+      <div class="link-grid" aria-label="Tracker sections">
+        <a href="/cases/">Cases and stats</a>
+        <a href="/timeline/">Outbreak timeline</a>
+        <a href="/cruise/">Cruise route</a>
+        <a href="/advisories/">Official advisories</a>
+        <a href="/sources/">Latest sources</a>
+        <a href="/faq/">FAQ</a>
+      </div>
+
+      <section class="latest" aria-labelledby="latest-heading">
+        <div class="section-head">
+          <h2 id="latest-heading">Latest source coverage</h2>
+          <a class="more" href="/sources/">All sources</a>
+        </div>
+        <div class="news-grid">
+          {recentNews.map((item) => <NewsCard item={item} />)}
+        </div>
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-7);
+  }
+  .summary-panel {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+  }
+  .summary-panel h2 {
+    font-size: var(--fs-lg);
+  }
+  .small,
+  .footnote {
+    font-size: var(--fs-xs);
+  }
+  .footnote {
+    margin-top: var(--sp-4);
+  }
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-3);
+    margin: var(--sp-7) 0;
+  }
+  .link-grid a {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4);
+    text-decoration: none;
+  }
+  .link-grid a:hover {
+    border-color: var(--c-border-strong);
+  }
+  .latest {
+    margin-top: var(--sp-7);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-5);
+  }
+  .more {
+    font-size: var(--fs-sm);
+    text-decoration: none;
+  }
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+  }
+  @media (max-width: 900px) {
+    .summary-grid,
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+    .link-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .link-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

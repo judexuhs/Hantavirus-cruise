@@ -21,7 +21,7 @@ export const reutersFetcher: Fetcher = {
     let lastErr: Error | undefined;
     for (const url of FEEDS) {
       try {
-        const raw = await fetchFeed(url, { timeoutMs: 4000 });
+        const raw = await fetchFeed(url, { timeoutMs: 8000 });
         for (const r of raw) {
           if (!r.title || !r.link) continue;
           out.push(

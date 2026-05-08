@@ -1,0 +1,129 @@
+---
+import Base from "~/layouts/Base.astro";
+import CasesGrid from "~/components/CasesGrid.astro";
+import RouteMap from "~/components/RouteMap.astro";
+import TimelineList from "~/components/TimelineList.astro";
+import { cruise, latestSnapshot, newsMeta, stats } from "~/data";
+import { formatDateTime } from "~/lib/format";
+
+const snapshot = latestSnapshot();
+const currentPort = cruise.ports[cruise.ports.length - 1];
+const origin = new URL(Astro.url.pathname, Astro.site).origin;
+const structured = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "MV Hondius live tracker",
+    description:
+      "MV Hondius ship tracker with current outbreak status, itinerary map, Tenerife arrival notes, case counts, and source-linked timeline.",
+    dateModified: newsMeta.lastRunAt,
+    inLanguage: "en",
+    mainEntityOfPage: origin + "/ship-tracker/",
+    author: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    publisher: { "@type": "Organization", name: "Hantavirus Cruise Tracker" },
+    about: [
+      { "@type": "Vehicle", name: cruise.ship.name, identifier: cruise.ship.imo },
+      { "@type": "MedicalCondition", name: "Hantavirus disease" },
+    ],
+  },
+];
+---
+
+<Base
+  title="MV Hondius live tracker"
+  description="MV Hondius ship tracker: current status, itinerary and route map, Tenerife arrival notes, case counts, and source-linked outbreak timeline."
+  ogType="article"
+  structuredData={structured}
+  modifiedTime={newsMeta.lastRunAt}
+  breadcrumbs={[{ name: "Ship tracker", path: "/ship-tracker/" }]}
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Ship tracker</p>
+      <h1>MV Hondius live tracker</h1>
+      <p class="muted lede">
+        Current status, reported route, and outbreak timeline for the {cruise.ship.name}. This map
+        shows the documented itinerary and latest reported destination; it is not live AIS data.
+      </p>
+
+      <div class="tracker-status">
+        <section>
+          <span class="label">Current status</span>
+          <strong
+            >{
+              stats.outbreak.status === "active" ? "Active outbreak" : stats.outbreak.status
+            }</strong
+          >
+          <p>{cruise.voyage.currentStatus}</p>
+        </section>
+        <section>
+          <span class="label">Latest reported point</span>
+          <strong>{currentPort?.name ?? "Pending update"}</strong>
+          <p>
+            Sources refreshed <time datetime={newsMeta.lastRunAt}
+              >{formatDateTime(newsMeta.lastRunAt)}</time
+            >.
+          </p>
+        </section>
+      </div>
+
+      <RouteMap ports={cruise.ports} />
+
+      <section class="section-inline" aria-labelledby="cases-heading">
+        <h2 id="cases-heading">Outbreak snapshot</h2>
+        <CasesGrid />
+        {snapshot?.note && <p class="subtle footnote">{snapshot.note}</p>}
+      </section>
+
+      <section class="section-inline" aria-labelledby="timeline-heading">
+        <h2 id="timeline-heading">Route and outbreak timeline</h2>
+        <TimelineList limit={8} showPending={true} />
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lede {
+    font-size: var(--fs-md);
+    max-width: var(--prose-max);
+    margin-bottom: var(--sp-6);
+  }
+  .tracker-status {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-6);
+  }
+  .tracker-status section {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-5);
+  }
+  .tracker-status strong {
+    display: block;
+    margin: var(--sp-2) 0;
+    font-size: var(--fs-lg);
+  }
+  .tracker-status p,
+  .footnote {
+    font-size: var(--fs-xs);
+    margin: 0;
+  }
+  .label {
+    color: var(--c-fg-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .section-inline {
+    margin-top: var(--sp-7);
+  }
+  @media (max-width: 800px) {
+    .tracker-status {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

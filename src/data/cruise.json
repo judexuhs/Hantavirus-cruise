@@ -9,8 +9,8 @@
   },
   "voyage": {
     "departed": "2026-04-01T00:00:00Z",
-    "scheduledReturn": "2026-05-09T12:00:00Z",
-    "currentStatus": "Sailing toward Tenerife after three medical evacuees were airlifted from Cape Verde to the Netherlands on May 6. Spain has agreed to receive the ship at the secondary port of Granadilla; the formal docking request is for May 9 at 12:00 local time. Symptomatic and Spanish-national passengers will quarantine at a military hospital in Madrid; foreign passengers will be repatriated through EU civil protection mechanisms."
+    "scheduledReturn": "2026-05-10T12:00:00+01:00",
+    "currentStatus": "Sailing toward Tenerife after three medical evacuees were airlifted from Cape Verde to the Netherlands on May 6. Spain's latest plan is for the vessel to anchor off Granadilla rather than dock; passengers will be evaluated on board, then moved under a controlled transfer and repatriation operation without contact with the local public."
   },
   "ports": [
     {
@@ -19,7 +19,7 @@
       "arrival": null,
       "departure": "2026-04-01T00:00:00Z",
       "lat": -54.8019,
-      "lon": -68.3030,
+      "lon": -68.303,
       "note": "Departure port. Ship had been based here since November 16, 2025 conducting Antarctic voyages. Investigators are looking at potential ANDV exposure before boarding — the deceased Dutch couple had also travelled through Argentina, Chile, and Uruguay before embarking."
     },
     {
@@ -74,13 +74,13 @@
       "note": "Cape Verde declined to permit docking. On May 6, three patients were transferred by ambulance to Praia airport and airlifted to the Netherlands aboard two specialised medical aircraft."
     },
     {
-      "name": "Granadilla, Tenerife (planned)",
+      "name": "Granadilla, Tenerife anchorage (planned)",
       "country": "Spain — Canary Islands",
-      "arrival": "2026-05-09T12:00:00Z",
+      "arrival": "2026-05-10T12:00:00+01:00",
       "departure": null,
       "lat": 28.107,
       "lon": -16.502,
-      "note": "Granadilla is a secondary port with low commercial activity, ten minutes from Tenerife South Airport — chosen to minimise contact with the local population. Decision faced opposition from the Canary Islands regional government."
+      "note": "Latest Spanish/Canary Islands plan: the ship is expected to anchor off Granadilla rather than dock. Passengers will be assessed on board and leave only for controlled transfer or repatriation, with no contact with the local population."
     }
   ],
   "disclaimer": "Itinerary compiled from Oceanwide Expeditions' press timeline, ECDC assessment, El País voyage reconstruction, BBC and Le Monde reporting, and the Dutch Ministry of Foreign Affairs medical-evacuation statement. Latitudes and longitudes are approximate centers of each port or anchorage."

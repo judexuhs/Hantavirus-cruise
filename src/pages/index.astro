@@ -49,23 +49,43 @@ const baseUrl = (path: string) => {
         <h3>What we know</h3>
         <ul class="bullet">
           <li>
-            Hantaviruses are <strong>rodent-borne</strong>; person-to-person spread is rare for
-            most strains.
+            Hantaviruses are <strong>rodent-borne</strong>; person-to-person spread is rare for most
+            strains.
+          </li>
+          <li>The strain involved here has not yet been confirmed by a reference laboratory.</li>
+          <li>
+            Incubation is typically <strong>2–4 weeks</strong>; passengers should monitor symptoms
+            for at least 6 weeks after disembarkation.
           </li>
           <li>
-            The strain involved here has not yet been confirmed by a reference laboratory.
-          </li>
-          <li>
-            Incubation is typically <strong>2–4 weeks</strong>; passengers should monitor
-            symptoms for at least 6 weeks after disembarkation.
-          </li>
-          <li>
-            There is no specific antiviral; care is supportive, and early hospitalisation
-            improves outcomes.
+            There is no specific antiviral; care is supportive, and early hospitalisation improves
+            outcomes.
           </li>
         </ul>
         <a class="more" href={baseUrl("/about/")}>Read the full primer →</a>
       </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="popular-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="popular-heading">Popular searches</h2>
+      </div>
+      <div class="search-grid">
+        <a href={baseUrl("/hantavirus-tracker/")}>
+          <strong>Hantavirus tracker</strong>
+          <span>Current case snapshot, timeline, advisories, and refreshed sources.</span>
+        </a>
+        <a href={baseUrl("/mv-hondius-current-status-tenerife-arrival-may-2026/")}>
+          <strong>MV Hondius current status Tenerife arrival May 2026</strong>
+          <span>Granadilla arrival notes, quarantine details, and latest case figures.</span>
+        </a>
+        <a href={baseUrl("/ship-tracker/")}>
+          <strong>MV Hondius live tracker</strong>
+          <span>Interactive route map, latest reported point, and outbreak timeline.</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -141,6 +161,28 @@ const baseUrl = (path: string) => {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--sp-4);
   }
+  .search-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-4);
+  }
+  .search-grid a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    background: var(--c-bg-elev);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--sp-4);
+    text-decoration: none;
+  }
+  .search-grid a:hover {
+    border-color: var(--c-border-strong);
+  }
+  .search-grid span {
+    color: var(--c-fg-muted);
+    font-size: var(--fs-sm);
+  }
   @media (max-width: 1024px) {
     .two-col {
       grid-template-columns: 1fr;
@@ -150,6 +192,9 @@ const baseUrl = (path: string) => {
     }
     .news-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .search-grid {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 640px) {

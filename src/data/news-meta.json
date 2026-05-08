@@ -1,9 +1,8 @@
 {
-  "lastRunAt": "2026-05-08T03:46:50.938Z",
+  "lastRunAt": "2026-05-08T04:44:49.627Z",
   "perSourceCounts": {
     "cdc": 21,
     "who": 50,
-    "google-news": 100,
     "reddit": 0
   },
   "errors": [
@@ -12,10 +11,14 @@
       "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
     },
     {
+      "source": "google-news",
+      "message": "feed https://news.google.com/rss/search?q=(%22hantavirus%22)%20AND%20(cruise%20OR%20ship%20OR%20voyage%20OR%20vessel)&hl=en-US&gl=US&ceid=US:en fetch failed: fetch failed (UND_ERR_CONNECT_TIMEOUT: Connect Timeout Error (attempted addresses: 2404:6800:4012:9::200e:443, 142.250.198.78:443, timeout: 10000ms))"
+    },
+    {
       "source": "reuters",
-      "message": "feed http://feeds.reuters.com/reuters/healthNews fetch failed: fetch failed (ENOTFOUND: getaddrinfo ENOTFOUND feeds.reuters.com)"
+      "message": "feed http://feeds.reuters.com/reuters/healthNews fetch failed: This operation was aborted"
     }
   ],
-  "totalItems": 141,
-  "note": "Updated automatically by scripts/scrape/run.ts; do not edit by hand."
+  "totalItems": 144,
+  "note": "Updated automatically by scripts/scrape/run.ts; manually curated breaking-news items may be added when RSS sources time out."
 }

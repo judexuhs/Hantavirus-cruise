@@ -16,7 +16,7 @@ export const googleNewsFetcher: Fetcher = {
   name: "google-news",
   sourceType: "news",
   async fetch(ctx: FetchContext): Promise<NewsItem[]> {
-    const raw = await fetchFeed(FEED, { timeoutMs: 4000 });
+    const raw = await fetchFeed(FEED, { timeoutMs: 12000 });
     return raw
       .filter((r) => r.title && r.link)
       .map((r) =>

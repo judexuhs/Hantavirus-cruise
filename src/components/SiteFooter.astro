@@ -11,8 +11,8 @@ const baseUrl = (path: string) => {
       <h4>About this site</h4>
       <p class="muted">
         An independent, fact-first tracker of the Hantavirus cruise outbreak. Every claim links to
-        its primary source. We surface official health-agency notices first, mainstream news
-        second, and clearly-labeled social signals last.
+        its primary source. We surface official health-agency notices first, mainstream news second,
+        and clearly-labeled social signals last.
       </p>
     </div>
 
@@ -20,6 +20,13 @@ const baseUrl = (path: string) => {
       <h4>Browse</h4>
       <ul class="links">
         <li><a href={baseUrl("/")}>Overview</a></li>
+        <li><a href={baseUrl("/hantavirus-tracker/")}>Hantavirus tracker</a></li>
+        <li><a href={baseUrl("/ship-tracker/")}>MV Hondius live tracker</a></li>
+        <li>
+          <a href={baseUrl("/mv-hondius-current-status-tenerife-arrival-may-2026/")}
+            >MV Hondius Tenerife status</a
+          >
+        </li>
         <li><a href={baseUrl("/timeline/")}>Timeline</a></li>
         <li><a href={baseUrl("/cases/")}>Cases and stats</a></li>
         <li><a href={baseUrl("/cruise/")}>Cruise and route</a></li>
@@ -33,10 +40,21 @@ const baseUrl = (path: string) => {
         <li><a href={baseUrl("/privacy/")}>Privacy Policy</a></li>
       </ul>
       <p class="subtle small">
-        Not affiliated with any health authority or cruise operator. Information is provided
-        without warranty; consult official sources before making travel or medical decisions.
+        Not affiliated with any health authority or cruise operator. Information is provided without
+        warranty; consult official sources before making travel or medical decisions.
       </p>
     </div>
+  </div>
+  <div class="footer-badge" aria-label="Featured listing">
+    <a href="https://twelve.tools" target="_blank" rel="noopener">
+      <img
+        src="https://twelve.tools/badge1-white.svg"
+        alt="Featured on Twelve Tools"
+        width="200"
+        height="54"
+        loading="lazy"
+      />
+    </a>
   </div>
 </footer>
 
@@ -75,6 +93,24 @@ const baseUrl = (path: string) => {
   }
   .small {
     font-size: var(--fs-xs);
+  }
+  .footer-badge {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--sp-6);
+    opacity: 0.42;
+  }
+  .footer-badge:hover,
+  .footer-badge:focus-within {
+    opacity: 0.72;
+  }
+  .footer-badge a {
+    display: inline-flex;
+  }
+  .footer-badge img {
+    display: block;
+    width: 160px;
+    height: auto;
   }
   @media (max-width: 768px) {
     .footer-inner {
