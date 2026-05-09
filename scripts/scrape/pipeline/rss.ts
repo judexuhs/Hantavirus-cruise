@@ -74,7 +74,7 @@ async function fetchFeedOnce(
         signal,
         dispatcher,
         headers: mergedHeaders,
-      })) as Response;
+      })) as unknown as Response;
     } else {
       res = await fetch(url, { signal, headers: mergedHeaders });
     }
