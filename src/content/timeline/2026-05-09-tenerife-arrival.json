@@ -1,17 +1,21 @@
 {
   "date": "2026-05-09T12:00:00Z",
-  "title": "Planned berth at Granadilla, Tenerife (12:00 local)",
-  "body": "Oceanwide Expeditions has formally requested to dock at Granadilla port at 12:00 noon on May 9. On arrival, Spanish authorities are scheduled to perform a full epidemiological investigation, examine and treat all passengers and crew, then transfer them onward — with symptomatic individuals and Spanish nationals quarantined at a military hospital in Madrid, and foreign passengers repatriated through EU civil protection. Disinfection of the vessel follows.",
+  "title": "Granadilla anchorage window — controlled disembarkation (May 9 local)",
+  "body": "Spanish authorities and WHO leadership finalised an anchored operation off Granadilla rather than a normal cruise berth: medical teams board or meet launches, passengers and crew are triaged on board, then moved in closed loops toward airport rotations or Madrid military hospital care for Spanish nationals. Foreign governments and the EU Civil Protection Mechanism supply repatriation flights; the vessel is later sanitised before any return to service.",
   "category": "advisory",
   "sources": [
+    {
+      "label": "ABC News — live updates (expected Granadilla arrival May 9)",
+      "url": "https://abcnews.com/International/live-updates/hantavirus-live-updates-mv-hondius-canary-islands/?id=132746955"
+    },
     {
       "label": "Sur in English — Tenerife to receive 'Hantavirus ship' at secondary port",
       "url": "https://www.surinenglish.com/spain/tenerife-receive-hantavirus-ship-secondary-port-british-20260506164948-nt.html"
     },
     {
-      "label": "Tenerife Weekly — Oceanwide negotiates mass disembarkation",
-      "url": "https://tenerifeweekly.com/2026/05/05/health-alert-oceanwide-expeditions-negotiates-mass-disembarkation-of-the-hondius-in-the-canary-islands/"
+      "label": "Oceanwide Expeditions — press update 8 May 2026, 19:00 CET",
+      "url": "https://oceanwide-expeditions.com/press/press-update-m-v-hondius-8-may-2026-19-00-hrs-cet"
     }
   ],
-  "status": "pending"
+  "status": "confirmed"
 }

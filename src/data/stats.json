@@ -4,7 +4,7 @@
     "shipName": "MV Hondius",
     "operator": "Oceanwide Expeditions",
     "status": "active",
-    "statusUpdatedAt": "2026-05-08T03:03:00Z"
+    "statusUpdatedAt": "2026-05-09T14:00:00Z"
   },
   "snapshots": [
     {
@@ -51,6 +51,15 @@
       "deaths": 3,
       "underObservation": 141,
       "note": "Counts unchanged from the WHO May 7 update. Spain's latest operational plan is for MV Hondius to reach Tenerife waters without docking; passengers will be evaluated on board and transferred for repatriation without contact with the local public."
+    },
+    {
+      "asOf": "2026-05-09T14:00:00Z",
+      "confirmed": 6,
+      "suspected": 2,
+      "recovered": 0,
+      "deaths": 3,
+      "underObservation": 147,
+      "note": "WHO (May 8, via Reuters and other wire reporting): six laboratory-confirmed cases linked to the cruise, with the publicly reported outbreak total still framed around eight cases under active investigation (two remaining suspected vs. the May 7 split of five confirmed / three suspected). Three deaths. By May 9 the vessel was in the Granadilla, Tenerife operational window for at-sea medical assessment and controlled repatriation without public contact ashore (Spanish briefing; ABC News live updates May 8)."
     }
   ]
 }

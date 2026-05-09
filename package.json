@@ -24,7 +24,8 @@
     "@vercel/analytics": "^2.0.1",
     "astro": "^5.1.1",
     "fast-xml-parser": "^4.5.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "undici": "^8.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

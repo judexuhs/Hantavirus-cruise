@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { Agent, fetch as undiciFetch } from "undici";
 
 /**
  * Minimal RSS / Atom parser used by every fetcher that pulls from a feed.
@@ -23,6 +24,10 @@ const parser = new XMLParser({
 export type FetchFeedOptions = {
   headers?: Record<string, string>;
   timeoutMs?: number;
+  /** Extra attempts after the first failure (0 = no retries). */
+  retries?: number;
+  /** Base delay in ms before retry; multiplied by attempt index (1, 2, …). */
+  retryDelayMs?: number;
 };
 
 function withTimeout(timeoutMs: number | undefined) {
@@ -41,31 +46,38 @@ function formatFetchError(err: unknown): string {
   return err.message;
 }
 
-export async function fetchFeed(url: string): Promise<RawFeedItem[]>;
-export async function fetchFeed(url: string, headers: Record<string, string>): Promise<RawFeedItem[]>;
-export async function fetchFeed(url: string, options: FetchFeedOptions): Promise<RawFeedItem[]>;
-export async function fetchFeed(
-  url: string,
-  headersOrOptions: Record<string, string> | FetchFeedOptions = {},
-): Promise<RawFeedItem[]> {
-  const isFetchFeedOptions = (v: unknown): v is FetchFeedOptions =>
-    typeof v === "object" && v !== null && ("timeoutMs" in (v as object) || "headers" in (v as object));
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  const headers: Record<string, string> = isFetchFeedOptions(headersOrOptions)
-    ? headersOrOptions.headers ?? {}
-    : headersOrOptions;
-  const timeoutMs = isFetchFeedOptions(headersOrOptions) ? headersOrOptions.timeoutMs : undefined;
+async function fetchFeedOnce(
+  url: string,
+  headers: Record<string, string>,
+  timeoutMs: number | undefined,
+): Promise<RawFeedItem[]> {
   const { signal, clear } = withTimeout(timeoutMs);
+  const mergedHeaders = {
+    "user-agent": "hantavirus-cruise-tracker/0.1 (+https://github.com/) feed-aggregator",
+    accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+    ...headers,
+  };
+
   let res: Response;
   try {
-    res = await fetch(url, {
-      signal,
-      headers: {
-        "user-agent": "hantavirus-cruise-tracker/0.1 (+https://github.com/) feed-aggregator",
-        accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
-        ...headers,
-      },
-    });
+    if (timeoutMs !== undefined) {
+      const dispatcher = new Agent({
+        connectTimeout: timeoutMs,
+        headersTimeout: timeoutMs + 15_000,
+        bodyTimeout: timeoutMs + 15_000,
+      });
+      res = (await undiciFetch(url, {
+        signal,
+        dispatcher,
+        headers: mergedHeaders,
+      })) as Response;
+    } else {
+      res = await fetch(url, { signal, headers: mergedHeaders });
+    }
   } catch (err) {
     throw new Error(`feed ${url} fetch failed: ${formatFetchError(err)}`);
   } finally {
@@ -76,6 +88,42 @@ export async function fetchFeed(
   }
   const xml = await res.text();
   return parseFeed(xml);
+}
+
+export async function fetchFeed(url: string): Promise<RawFeedItem[]>;
+export async function fetchFeed(url: string, headers: Record<string, string>): Promise<RawFeedItem[]>;
+export async function fetchFeed(url: string, options: FetchFeedOptions): Promise<RawFeedItem[]>;
+export async function fetchFeed(
+  url: string,
+  headersOrOptions: Record<string, string> | FetchFeedOptions = {},
+): Promise<RawFeedItem[]> {
+  const isFetchFeedOptions = (v: unknown): v is FetchFeedOptions =>
+    typeof v === "object" &&
+    v !== null &&
+    ("timeoutMs" in (v as object) ||
+      "headers" in (v as object) ||
+      "retries" in (v as object) ||
+      "retryDelayMs" in (v as object));
+
+  const headers: Record<string, string> = isFetchFeedOptions(headersOrOptions)
+    ? headersOrOptions.headers ?? {}
+    : headersOrOptions;
+  const timeoutMs = isFetchFeedOptions(headersOrOptions) ? headersOrOptions.timeoutMs : undefined;
+  const retries = isFetchFeedOptions(headersOrOptions) ? (headersOrOptions.retries ?? 0) : 0;
+  const retryDelayMs = isFetchFeedOptions(headersOrOptions) ? (headersOrOptions.retryDelayMs ?? 1500) : 1500;
+
+  let lastErr: Error | undefined;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    if (attempt > 0) {
+      await sleep(retryDelayMs * attempt);
+    }
+    try {
+      return await fetchFeedOnce(url, headers, timeoutMs);
+    } catch (err) {
+      lastErr = err instanceof Error ? err : new Error(String(err));
+    }
+  }
+  throw lastErr;
 }
 
 export function parseFeed(xml: string): RawFeedItem[] {

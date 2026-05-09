@@ -10,7 +10,7 @@
   "voyage": {
     "departed": "2026-04-01T00:00:00Z",
     "scheduledReturn": "2026-05-10T12:00:00+01:00",
-    "currentStatus": "Sailing toward Tenerife after three medical evacuees were airlifted from Cape Verde to the Netherlands on May 6. Spain's latest plan is for the vessel to anchor off Granadilla rather than dock; passengers will be evaluated on board, then moved under a controlled transfer and repatriation operation without contact with the local public."
+    "currentStatus": "Positioned off Granadilla, Tenerife during the May 9 disembarkation window after leaving Cape Verde on May 6 (three medevacs to the Netherlands that day). Spain's plan remains anchored operations: assess passengers and crew on board, then move people only via controlled small-boat/air transfer for quarantine or repatriation, without routine contact between evacuees and the local public."
   },
   "ports": [
     {
@@ -74,13 +74,13 @@
       "note": "Cape Verde declined to permit docking. On May 6, three patients were transferred by ambulance to Praia airport and airlifted to the Netherlands aboard two specialised medical aircraft."
     },
     {
-      "name": "Granadilla, Tenerife anchorage (planned)",
+      "name": "Granadilla, Tenerife anchorage",
       "country": "Spain — Canary Islands",
-      "arrival": "2026-05-10T12:00:00+01:00",
+      "arrival": "2026-05-09T11:00:00Z",
       "departure": null,
       "lat": 28.107,
       "lon": -16.502,
-      "note": "Latest Spanish/Canary Islands plan: the ship is expected to anchor off Granadilla rather than dock. Passengers will be assessed on board and leave only for controlled transfer or repatriation, with no contact with the local population."
+      "note": "Operational window May 9 (local midday): anchor off Granadilla for the Spanish-led medical and repatriation plan — no normal berthing; transfers by launch to shore cordons/airport rotations per May 7–9 government briefings."
     }
   ],
   "disclaimer": "Itinerary compiled from Oceanwide Expeditions' press timeline, ECDC assessment, El País voyage reconstruction, BBC and Le Monde reporting, and the Dutch Ministry of Foreign Affairs medical-evacuation statement. Latitudes and longitudes are approximate centers of each port or anchorage."
