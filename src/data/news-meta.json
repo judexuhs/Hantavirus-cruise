@@ -1,9 +1,9 @@
 {
-  "lastRunAt": "2026-06-03T11:20:01.187Z",
+  "lastRunAt": "2026-06-03T17:07:53.706Z",
   "perSourceCounts": {
     "cdc": 25,
     "who": 50,
-    "google-news": 100,
+    "google-news": 0,
     "reddit": 0
   },
   "errors": [
