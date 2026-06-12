@@ -1,15 +1,12 @@
 {
-  "lastRunAt": "2026-06-12T10:37:25.741Z",
+  "lastRunAt": "2026-06-12T15:33:59.771Z",
   "perSourceCounts": {
     "cdc": 28,
+    "who": 50,
     "google-news": 100,
     "reddit": 0
   },
   "errors": [
-    {
-      "source": "who",
-      "message": "feed https://www.who.int/feeds/entity/csr/don/en/rss.xml responded 404 Not Found"
-    },
     {
       "source": "ecdc",
       "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
