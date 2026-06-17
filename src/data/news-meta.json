@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-06-16T21:14:56.415Z",
+  "lastRunAt": "2026-06-17T05:04:16.245Z",
   "perSourceCounts": {
     "cdc": 28,
     "who": 50,
@@ -9,7 +9,7 @@
   "errors": [
     {
       "source": "ecdc",
-      "message": "feed https://www.ecdc.europa.eu/en/feed responded 403 Forbidden"
+      "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
     },
     {
       "source": "reuters",
