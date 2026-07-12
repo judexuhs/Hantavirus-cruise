@@ -1,18 +1,15 @@
 {
-  "lastRunAt": "2026-07-11T19:18:02.885Z",
+  "lastRunAt": "2026-07-12T03:44:51.956Z",
   "perSourceCounts": {
     "cdc": 26,
     "who": 50,
+    "google-news": 100,
     "reddit": 0
   },
   "errors": [
     {
       "source": "ecdc",
       "message": "feed https://www.ecdc.europa.eu/en/feed responded 404 Not Found"
-    },
-    {
-      "source": "google-news",
-      "message": "feed https://news.google.com/rss/search?q=(%22hantavirus%22)%20AND%20(cruise%20OR%20ship%20OR%20voyage%20OR%20vessel)&hl=en-US&gl=US&ceid=US:en responded 503 "
     },
     {
       "source": "reuters",
